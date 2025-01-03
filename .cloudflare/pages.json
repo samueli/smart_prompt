@@ -1,0 +1,16 @@
+{
+  "build": {
+    "command": "npm run build",
+    "output": "dist",
+    "environment": {
+      "NODE_VERSION": "18"
+    }
+  },
+  "routes": [
+    {
+      "pattern": "/*",
+      "serve": "/index.html",
+      "status": 200
+    }
+  ]
+}

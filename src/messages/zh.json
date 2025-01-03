@@ -1,0 +1,129 @@
+{
+  "Header": {
+    "login": "登录",
+    "home": "首页",
+    "prompts": "提示词",
+    "optimizer": "优化器",
+    "plugins": "插件"
+  },
+  "Hero": {
+    "title": "AI 提示词管理工具",
+    "description": "轻松管理和优化您的 AI 提示词",
+    "getStarted": "开始使用",
+    "documentation": "使用文档"
+  },
+  "Common": {
+    "switchLanguage": "切换语言",
+    "currentLanguage": "中文"
+  },
+  "Features": {
+    "title": "功能特点",
+    "description": "一站式AI提示词管理解决方案",
+    "collection": "提示词收藏",
+    "collectionDesc": "保存和整理您的提示词",
+    "optimization": "提示词优化",
+    "optimizationDesc": "AI辅助优化提示词",
+    "tags": "标签管理",
+    "tagsDesc": "使用标签分类整理",
+    "multilingual": "多语言支持",
+    "multilingualDesc": "支持多种语言界面",
+    "darkMode": "暗色模式",
+    "darkModeDesc": "舒适的浏览体验",
+    "settings": "个性化设置",
+    "settingsDesc": "自定义您的使用体验"
+  },
+  "QuickStart": {
+    "title": "开始创建",
+    "description": "开始使用 Smart Prompt，创建您的第一个 AI 提示词",
+    "createPrompt": "创建提示词",
+    "learnMore": "了解更多"
+  },
+  "FAQ": {
+    "title": "常见问题",
+    "description": "关于Smart Prompt的常见问题解答",
+    "q1": {
+      "question": "什么是Smart Prompt？",
+      "answer": "Smart Prompt是一个专业的AI提示词管理和优化工具。"
+    },
+    "q2": {
+      "question": "如何开始使用？",
+      "answer": "点击\"开始使用\"按钮，即可开始收藏和管理提示词。"
+    },
+    "q3": {
+      "question": "是否免费使用？",
+      "answer": "是的，基础功能完全免费。"
+    },
+    "q4": {
+      "question": "提示词优化是如何工作的？",
+      "answer": "我们的AI会分析您的提示词，并根据最佳实践提供优化建议。"
+    }
+  },
+  "Footer": {
+    "rights": "版权所有",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  },
+  "Prompts": {
+    "title": "我的提示词",
+    "description": "管理您的提示词集合",
+    "new": "新建提示词",
+    "search": "搜索提示词...",
+    "noResults": "未找到提示词。",
+    "tags": "标签",
+    "addTag": "添加标签"
+  },
+  "Optimizer": {
+    "input": "输入提示词",
+    "inputPlaceholder": "在此输入您的提示词...",
+    "direction": "优化方向",
+    "clarity": "清晰度",
+    "creativity": "创造力",
+    "precision": "精确度",
+    "optimize": "优化",
+    "optimizing": "优化中...",
+    "output": "优化后的提示词"
+  },
+  "Settings": {
+    "token": "API令牌",
+    "tokenPlaceholder": "输入您的API令牌",
+    "generate": "生成",
+    "notifications": "启用通知",
+    "save": "保存设置"
+  },
+  "Plugins": {
+    "title": "浏览器插件",
+    "description": "使用我们的浏览器插件，随时随地管理您的提示词",
+    "downloadText": "下载插件",
+    "browsers": {
+      "chrome": "下载 Chrome 插件",
+      "firefox": "下载 Firefox 插件",
+      "edge": "下载 Edge 插件"
+    },
+    "features": {
+      "quickAccess": {
+        "title": "快速访问",
+        "description": "一键访问您收藏的提示词"
+      },
+      "contextMenu": {
+        "title": "右键菜单",
+        "description": "在任何页面上通过右键菜单快速保存提示词"
+      },
+      "sync": {
+        "title": "自动同步",
+        "description": "与您的账户自动同步所有提示词"
+      }
+    },
+    "installation": {
+      "title": "安装说明",
+      "steps": {
+        "1": "从浏览器商店下载插件",
+        "2": "点击安装并确认权限",
+        "3": "登录您的账户以同步数据",
+        "4": "开始使用！"
+      }
+    }
+  },
+  "logo": {
+    "alt": "Smart Prompt Logo"
+  }
+}
