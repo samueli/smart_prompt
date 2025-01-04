@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Smart Prompt</title>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 240 10% 3.9%;
+            --primary: 240 5.9% 10%;
+            --primary-foreground: 0 0% 98%;
+            --secondary: 240 4.8% 95.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 10% 3.9%;
+            --border: 240 5.9% 90%;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: 240 10% 3.9%;
+                --foreground: 0 0% 98%;
+                --primary: 0 0% 98%;
+                --primary-foreground: 240 5.9% 10%;
+                --secondary: 240 3.7% 15.9%;
+                --card: 240 10% 3.9%;
+                --card-foreground: 0 0% 98%;
+                --border: 240 3.7% 15.9%;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: hsl(var(--foreground));
+            background-color: hsl(var(--background));
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: hsl(var(--primary));
+            margin-bottom: 40px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: hsl(var(--primary));
+            margin-top: 30px;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: hsl(var(--foreground));
+        }
+
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: hsl(var(--foreground));
+        }
+
+        a {
+            color: hsl(var(--primary));
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .update-time {
+            color: hsl(var(--foreground) / 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-switch button {
+            background: none;
+            border: 1px solid hsl(var(--border));
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: hsl(var(--foreground));
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .language-switch button.active {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        [lang] {
+            display: none;
+        }
+
+        [lang].active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="switchLanguage('zh-CN')" id="zh-btn">中文</button>
+        <button onclick="switchLanguage('en-US')" id="en-btn">English</button>
+    </div>
+
+    <div class="card">
+        <!-- 中文内容 -->
+        <div lang="zh-CN">
+            <h1>隐私政策</h1>
+            <p class="update-time">最后更新日期：2025年1月4日</p>
+
+            <h2>1. 信息收集</h2>
+            <p>我们收集的信息类型包括：</p>
+            <ul>
+                <li>您创建和优化的提示词内容</li>
+                <li>标签和分类信息</li>
+                <li>使用统计数据（如访问时间、优化次数等）</li>
+                <li>设备和浏览器信息</li>
+            </ul>
+
+            <h2>2. 信息使用</h2>
+            <p>我们使用收集的信息用于：</p>
+            <ul>
+                <li>提供提示词管理和优化服务</li>
+                <li>改进优化算法和模型</li>
+                <li>个性化推荐和搜索结果</li>
+                <li>发送服务更新和功能通知</li>
+            </ul>
+
+            <h2>3. 提示词审核</h2>
+            <p>为了维护平台质量，我们对公开的提示词进行审核：</p>
+            <ul>
+                <li>确保内容符合社区规范</li>
+                <li>防止有害或违规内容</li>
+                <li>保护知识产权</li>
+                <li>提升提示词的整体质量</li>
+            </ul>
+
+            <h2>4. 信息安全</h2>
+            <p>我们采取多重措施保护您的数据：</p>
+            <ul>
+                <li>使用加密技术保护数据传输和存储</li>
+                <li>实施访问控制和身份验证</li>
+                <li>定期安全审计和更新</li>
+            </ul>
+
+            <h2>5. 信息共享</h2>
+            <p>我们不会出售或出租您的个人信息。仅在以下情况下可能共享信息：</p>
+            <ul>
+                <li>获得您的明确授权</li>
+                <li>法律法规要求</li>
+                <li>保护平台和用户的合法权益</li>
+            </ul>
+
+            <h2>6. 您的权利</h2>
+            <p>作为用户，您享有以下权利：</p>
+            <ul>
+                <li>访问和导出您的提示词数据</li>
+                <li>修改或删除您的内容</li>
+                <li>管理公开/私密状态</li>
+                <li>注销账户</li>
+            </ul>
+
+            <h2>7. 联系我们</h2>
+            <p>如果您对我们的隐私政策有任何疑问或建议，请联系我们：</p>
+            <p>邮箱：<a href="mailto:contact@smartprompt.ai">contact@smartprompt.ai</a></p>
+        </div>
+
+        <!-- English content -->
+        <div lang="en-US">
+            <h1>Privacy Policy</h1>
+            <p class="update-time">Last updated: January 4, 2025</p>
+
+            <h2>1. Information Collection</h2>
+            <p>The types of information we collect include:</p>
+            <ul>
+                <li>Your created and optimized prompt content</li>
+                <li>Tags and classification information</li>
+                <li>Usage statistics (such as access time, optimization count, etc.)</li>
+                <li>Device and browser information</li>
+            </ul>
+
+            <h2>2. Information Usage</h2>
+            <p>We use the collected information for:</p>
+            <ul>
+                <li>Providing prompt management and optimization services</li>
+                <li>Improving optimization algorithms and models</li>
+                <li>Personalizing recommendations and search results</li>
+                <li>Sending service updates and feature notifications</li>
+            </ul>
+
+            <h2>3. Prompt Review</h2>
+            <p>To maintain platform quality, we review public prompts for:</p>
+            <ul>
+                <li>Ensuring compliance with community guidelines</li>
+                <li>Preventing harmful or inappropriate content</li>
+                <li>Protecting intellectual property</li>
+                <li>Improving overall prompt quality</li>
+            </ul>
+
+            <h2>4. Information Security</h2>
+            <p>We take multiple measures to protect your data:</p>
+            <ul>
+                <li>Using encryption for data transmission and storage</li>
+                <li>Implementing access control and authentication</li>
+                <li>Regular security audits and updates</li>
+            </ul>
+
+            <h2>5. Information Sharing</h2>
+            <p>We do not sell or rent your personal information. We may only share information in the following cases:</p>
+            <ul>
+                <li>With your explicit authorization</li>
+                <li>When required by law</li>
+                <li>To protect the legitimate interests of the platform and users</li>
+            </ul>
+
+            <h2>6. Your Rights</h2>
+            <p>As a user, you have the following rights:</p>
+            <ul>
+                <li>Access and export your prompt data</li>
+                <li>Modify or delete your content</li>
+                <li>Manage public/private status</li>
+                <li>Delete your account</li>
+            </ul>
+
+            <h2>7. Contact Us</h2>
+            <p>If you have any questions or suggestions about our privacy policy, please contact us:</p>
+            <p>Email: <a href="mailto:contact@smartprompt.ai">contact@smartprompt.ai</a></p>
+        </div>
+    </div>
+
+    <script>
+        function switchLanguage(lang) {
+            // 更新 URL 参数
+            const url = new URL(window.location);
+            url.searchParams.set('lang', lang);
+            window.history.pushState({}, '', url);
+
+            // 更新语言显示
+            document.querySelectorAll('[lang]').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelector(`[lang="${lang}"]`).classList.add('active');
+
+            // 更新按钮状态
+            document.querySelectorAll('.language-switch button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${lang.toLowerCase()}-btn`).classList.add('active');
+
+            // 更新页面标题
+            document.title = lang === 'zh-CN' ? '隐私政策 - Smart Prompt' : 'Privacy Policy - Smart Prompt';
+        }
+
+        // 初始化语言
+        function initLanguage() {
+            // 优先使用 URL 参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            
+            if (langParam && ['zh-CN', 'en-US'].includes(langParam)) {
+                switchLanguage(langParam);
+                return;
+            }
+
+            // 其次使用浏览器语言
+            const browserLang = navigator.language;
+            if (browserLang.startsWith('zh')) {
+                switchLanguage('zh-CN');
+            } else {
+                switchLanguage('en-US');
+            }
+        }
+
+        // 页面加载时初始化语言
+        document.addEventListener('DOMContentLoaded', initLanguage);
+    </script>
+</body>
+</html>

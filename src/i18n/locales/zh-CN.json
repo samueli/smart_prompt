@@ -1,0 +1,347 @@
+{
+  "Common": {
+    "switchLanguage": "切换语言",
+    "currentLanguage": "当前语言：中文",
+    "loading": "加载中...",
+    "save": "保存",
+    "saving": "保存中...",
+    "saved": "已保存",
+    "saveFailed": "保存失败",
+    "cancel": "取消",
+    "confirm": "确认",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "share": "分享",
+    "copy": "复制",
+    "search": "搜索",
+    "submit": "提交",
+    "submitting": "提交中...",
+    "error": "错误",
+    "unknownError": "发生未知错误",
+    "tokenRequired": "请先登录",
+    "loadFailed": "加载失败",
+    "optimizeSuccess": "优化成功",
+    "optimizeFailed": "优化失败",
+    "copySuccess": "复制成功",
+    "copyFailed": "复制失败",
+    "update": "更新",
+    "updateSuccess": "更新成功"
+  },
+  "Header": {
+    "prompts": "提示词",
+    "plugins": "插件",
+    "optimizer": "优化器",
+    "evaluator": "评测",
+    "settings": "设置",
+    "login": "登录"
+  },
+  "Hero": {
+    "title": "智能提示词管理器",
+    "description": "轻松管理和优化您的 AI 提示词",
+    "getStarted": "开始使用"
+  },
+  "Features": {
+    "title": "功能特点",
+    "description": "让提示词管理变得更简单、更智能",
+    "collection": "一键收藏",
+    "collectionDesc": "支持从浏览器扩展一键收藏提示词，自动保存使用记录，快速检索历史提示词",
+    "optimization": "智能优化",
+    "optimizationDesc": "支持多种优化框架，针对不同场景自动优化提示词效果，提升输出质量",
+    "tags": "标签管理",
+    "tagsDesc": "支持自定义标签分类，多维度组织提示词，支持标签搜索和筛选，轻松管理海量提示词",
+    "evaluation": "效果评测",
+    "evaluationDesc": "支持多个基准模型评测提示词效果，提供详细的评测报告，帮助持续改进提示词质量",
+    "personalization": "个性化体验",
+    "personalizationDesc": "支持中英文界面和深浅色主题切换，自动适配系统设置，提供舒适的使用体验",
+    "settings": "高级设置",
+    "settingsDesc": "支持自定义 API 和模型配置，灵活设置访问令牌和使用限制，满足不同场景需求"
+  },
+  "Prompts": {
+    "pageTitle": "提示词管理",
+    "title": "标题",
+    "titlePlaceholder": "请输入提示词标题",
+    "titleRequired": "请输入标题",
+    "description": "管理和组织您的提示词",
+    "new": "新建提示词",
+    "create": "新建提示词",
+    "search": "搜索提示词...",
+    "filter": "筛选",
+    "sort": "排序",
+    "sortAsc": "升序排序",
+    "sortDesc": "降序排序",
+    "noPrompts": "暂无提示词",
+    "noSearchResults": "未找到匹配的提示词",
+    "share": "分享提示词",
+    "copyPoster": "复制海报",
+    "download": "下载海报",
+    "copySuccess": "海报已复制到剪贴板",
+    "copyFailed": "复制失败",
+    "downloadFailed": "下载失败",
+    "scanForMore": "扫码查看更多高质量提示词",
+    "publish": "发布",
+    "publishTitle": "发布提示词",
+    "publishMessage": "提示词正在审核中，审核通过后将会公开展示",
+    "publishDescription": "为了保证提示词质量，提交发布后需要审核，该功能正在开发中",
+    "goToOptimize": "去优化",
+    "confirmPublish": "确认发布",
+    "editTags": "编辑标签",
+    "edit": "编辑",
+    "delete": "删除",
+    "confirmDelete": "确认删除",
+    "deleteMessage": "确定要删除这个提示词吗？此操作无法撤销。",
+    "cancel": "取消",
+    "tags": "标签",
+    "addTag": "添加标签",
+    "lastUpdated": "最后更新",
+    "fetchError": "获取提示词失败",
+    "updateSuccess": "更新成功",
+    "updateError": "更新失败",
+    "deleteSuccess": "删除成功",
+    "deleteError": "删除失败",
+    "createSuccess": "创建成功",
+    "createError": "创建失败",
+    "sourcePrompt": "原始提示词",
+    "sourcePromptPlaceholder": "请输入原始提示词...",
+    "sourcePromptRequired": "请输入原始提示词",
+    "optimizedPrompt": "优化后的提示词",
+    "optimizedPromptPlaceholder": "请输入优化后的提示词...",
+    "addTagPlaceholder": "输入标签并按回车添加",
+    "submit": "提交",
+    "submitting": "提交中...",
+    "confirmShare": "确认分享",
+    "shareMessage": "确定要分享这个提示词吗？分享后其他用户可以查看和使用这个提示词。",
+    "selectTags": "选择标签",
+    "searchTags": "搜索标签...",
+    "noTags": "没有找到标签",
+    "clearTags": "清除所有标签",
+    "selectSortField": "选择排序字段",
+    "sortByUpdateTime": "按更新时间",
+    "sortByCreateTime": "按创建时间",
+    "editTagsDescription": "添加或删除标签，按回车键添加新标签。",
+    "saving": "保存中...",
+    "save": "保存",
+    "saveFailed": "保存失败",
+    "noPublicPrompts": "暂无公开提示词",
+    "myPrompts": "我的提示词",
+    "publicPrompts": "公开提示词"
+  },
+  "Optimizer": {
+    "title": "提示词优化",
+    "placeholder": "请输入需要优化的提示词",
+    "optimize": "优化提示词",
+    "optimizing": "优化中...",
+    "result": "优化结果",
+    "resultPlaceholder": "优化后的提示词将显示在这里",
+    "scenario": "应用场景",
+    "outputFormat": "输出格式",
+    "scenarios": {
+      "general": "通用对话",
+      "coding": "代码编程",
+      "writing": "文章写作",
+      "official": "公文写作",
+      "translation": "语言翻译",
+      "analysis": "数据分析",
+      "roleplay": "角色扮演",
+      "marketing": "营销文案",
+      "email": "邮件写作",
+      "academic": "学术写作",
+      "storytelling": "故事创作",
+      "interview": "面试对话",
+      "teaching": "教学辅导",
+      "presentation": "演讲稿写作"
+    },
+    "outputFormats": {
+      "plaintext": "纯文本",
+      "markdown": "Markdown",
+      "json": "JSON",
+      "html": "HTML"
+    },
+    "confirmUpdateMessage": "确定要更新此提示词吗？原有内容将被覆盖。"
+  },
+  "Layout": {
+    "prompts": "提示词",
+    "optimizer": "优化器",
+    "evaluator": "评测",
+    "settings": "设置"
+  },
+  "Evaluator": {
+    "title": "提示词评测",
+    "baseModel": "基准模型",
+    "demoTip": "本功能仅做演示，正在紧锣密鼓开发中，实际功能可能会有调整。",
+    "input": {
+      "title": "输入提示词",
+      "placeholder": "请输入需要评测的提示词..."
+    },
+    "expected": {
+      "title": "预期结果",
+      "placeholder": "请输入预期的输出结果..."
+    },
+    "modelSelection": {
+      "title": "选择评测模型",
+      "addModel": "添加模型",
+      "placeholder": "搜索模型...",
+      "models": {
+        "gpt_4_turbo": "GPT-4 Turbo",
+        "gpt_4": "GPT-4",
+        "claude_3_opus": "Claude 3 Opus",
+        "claude_3_sonnet": "Claude 3 Sonnet",
+        "claude_2": "Claude 2",
+        "gemini_pro": "Gemini Pro",
+        "mixtral_8x7b": "Mixtral 8x7B",
+        "mistral_medium": "Mistral Medium",
+        "mistral_small": "Mistral Small",
+        "llama_2_70b": "Llama 2 70B",
+        "llama_2_13b": "Llama 2 13B",
+        "llama_2_7b": "Llama 2 7B",
+        "yi_34b": "Yi 34B",
+        "yi_6b": "Yi 6B",
+        "qwen_72b": "Qwen 72B",
+        "qwen_14b": "Qwen 14B",
+        "qwen_7b": "Qwen 7B",
+        "chatglm_4": "ChatGLM-4",
+        "chatglm_3_turbo": "ChatGLM-3 Turbo",
+        "chatglm_3": "ChatGLM-3",
+        "baichuan_2_53b": "Baichuan-2 53B",
+        "baichuan_2_13b": "Baichuan-2 13B",
+        "baichuan_2_7b": "Baichuan-2 7B"
+      }
+    },
+    "startEvaluation": "开始评测",
+    "evaluating": "评测中...",
+    "results": {
+      "title": "评测结果",
+      "model": "模型",
+      "time": "响应时间",
+      "cost": "成本",
+      "creativity": "创意性",
+      "accuracy": "精确性",
+      "overall": "综合评分",
+      "timeChart": "响应时间对比",
+      "scoreChart": "评分对比"
+    }
+  },
+  "QuickStart": {
+    "title": "快速开始",
+    "description": "只需几个简单的步骤，即可开始使用智能提示词",
+    "createPrompt": "创建提示词",
+    "learnMore": "了解更多"
+  },
+  "FAQ": {
+    "title": "常见问题",
+    "description": "了解更多关于 Smart Prompt 的使用方法和功能特点",
+    "general": {
+      "question": "Smart Prompt 是什么？",
+      "answer": "Smart Prompt 是一个智能提示词管理和优化工具，它可以帮助你收集、管理、优化和评测 AI 提示词。通过浏览器扩展，你可以方便地收藏和使用提示词，通过多种优化框架提升提示词效果，并使用多个基准模型进行效果评测。"
+    },
+    "collection": {
+      "question": "如何收藏和管理提示词？",
+      "answer": "你可以通过浏览器扩展一键收藏提示词，或者在网页端直接创建。系统会自动记录提示词的使用历史，你可以通过标题、标签或内容快速搜索。所有提示词都支持公开分享和私密保存。"
+    },
+    "optimization": {
+      "question": "提示词优化支持哪些框架？",
+      "answer": "我们支持多种主流的优化框架，包括 PromptWizard、APE、BROKE 等。每个框架都有其特点和适用场景，例如 PromptWizard 适合标准化场景，APE 适合自动化场景，BROKE 适合企业级应用等。"
+    },
+    "evaluation": {
+      "question": "如何评测提示词的效果？",
+      "answer": "你可以使用评测功能来测试提示词的效果。系统支持多个基准模型，包括 GPT-4、Claude 3 等。你可以设置预期输出，系统会生成详细的评测报告，帮助你持续改进提示词质量。"
+    },
+    "tags": {
+      "question": "如何使用标签管理提示词？",
+      "answer": "你可以为每个提示词添加多个标签，支持自定义标签分类。可以通过标签进行筛选和搜索，还可以按更新时间、创建时间等维度排序。这样可以更好地组织和管理大量提示词。"
+    },
+    "personalization": {
+      "question": "支持哪些个性化设置？",
+      "answer": "系统支持中英文界面切换，自动跟随系统的深浅色主题。你还可以自定义 API 和模型配置，设置访问令牌和使用限制，完全满足个性化使用需求。"
+    },
+    "token": {
+      "question": "为什么需要设置访问令牌？",
+      "answer": "访问令牌用于访问 API 和进行身份验证。你需要在设置页面配置令牌才能使用优化和评测功能。令牌信息会安全存储，不会泄露给其他用户。"
+    },
+    "privacy": {
+      "question": "我的提示词数据安全吗？",
+      "answer": "我们非常重视数据安全。你可以选择将提示词设为私密或公开。私密提示词只有你自己可以访问，公开提示词可以被其他用户查看和使用。所有数据传输都经过加密处理。"
+    },
+    "extension": {
+      "question": "如何安装和使用浏览器扩展？",
+      "answer": "你可以从 Chrome 应用商店安装我们的浏览器扩展。安装后，在任何网页上选中文本，点击扩展图标即可一键收藏为提示词。收藏的提示词会自动同步到你的账户中。"
+    }
+  },
+  "Footer": {
+    "rights": "保留所有权利",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  },
+  "Plugins": {
+    "title": "智能提示词插件",
+    "description": "使用我们的 Chrome 扩展程序，让你的提示词管理更加智能",
+    "downloadText": "下载插件",
+    "features": {
+      "collect": {
+        "title": "一键收藏",
+        "description": "轻松收藏和管理您的提示词"
+      },
+      "optimize": {
+        "title": "智能优化",
+        "description": "自动优化提示词以获得更好的效果"
+      },
+      "sync": {
+        "title": "云端同步",
+        "description": "随时随地访问您的提示词"
+      }
+    },
+    "coreFeatures": {
+      "title": "核心功能",
+      "description": "让你的提示词管理更加智能和高效"
+    },
+    "cta": {
+      "title": "准备开始使用了吗？",
+      "description": "立即下载 Chrome 扩展程序，开始优化您的提示词"
+    }
+  },
+  "Home": {
+    "title": "智能提示优化器",
+    "description": "使用先进的 AI 技术优化您的提示词，让 AI 更好地理解您的需求",
+    "getStarted": "开始使用"
+  },
+  "Settings": {
+    "title": "设置",
+    "token": "访问令牌",
+    "tokenDescription": "设置您的 API Token",
+    "tokenSecurityTip": "请妥善保管您的 Token，不要与他人分享。",
+    "generateToken": "生成新的 Token",
+    "baseModel": {
+      "title": "基准模型",
+      "description": "设置评测时使用的基准模型"
+    },
+    "currentModel": "当前模型",
+    "changeModel": "更改模型",
+    "saveSuccess": "设置保存成功",
+    "saveError": "设置保存失败",
+    "invalidToken": "无效的令牌格式"
+  },
+  "ModelSelect": {
+    "title": "选择模型",
+    "searchPlaceholder": "搜索模型",
+    "domestic": "国内模型",
+    "overseas": "海外模型",
+    "modelName": "模型名称",
+    "contextLength": "上下文长度",
+    "price": "价格",
+    "action": "操作",
+    "select": "选择",
+    "selected": "已选择",
+    "unavailable": "不可用",
+    "input": "输入",
+    "output": "输出",
+    "multimodal": "多模态"
+  },
+  "copy": {
+    "success": "复制成功",
+    "failed": "复制失败"
+  },
+  "save": {
+    "success": "保存成功",
+    "failed": "保存失败"
+  }
+}

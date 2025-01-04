@@ -1,0 +1,129 @@
+{
+  "Header": {
+    "login": "Login",
+    "home": "Home",
+    "prompts": "Prompts",
+    "plugins": "Plugins",
+    "optimizer": "Optimizer"
+  },
+  "Hero": {
+    "title": "AI Prompt Management Tool",
+    "description": "Easily manage and optimize your AI prompts",
+    "getStarted": "Get Started",
+    "documentation": "Documentation"
+  },
+  "Common": {
+    "switchLanguage": "Switch Language",
+    "currentLanguage": "English"
+  },
+  "Features": {
+    "title": "Features",
+    "description": "All-in-one AI Prompt Management Solution",
+    "collection": "Prompt Collection",
+    "collectionDesc": "Save and organize your prompts",
+    "optimization": "Prompt Optimization",
+    "optimizationDesc": "AI-assisted prompt optimization",
+    "tags": "Tag Management",
+    "tagsDesc": "Organize with tags",
+    "multilingual": "Multi-language",
+    "multilingualDesc": "Support multiple languages",
+    "darkMode": "Dark Mode",
+    "darkModeDesc": "Comfortable browsing experience",
+    "settings": "Settings",
+    "settingsDesc": "Customize your experience"
+  },
+  "QuickStart": {
+    "title": "Start Creating",
+    "description": "Begin your journey with Smart Prompt and create your first AI prompt",
+    "createPrompt": "Create Prompt",
+    "learnMore": "Learn More"
+  },
+  "FAQ": {
+    "title": "FAQ",
+    "description": "Frequently Asked Questions about Smart Prompt",
+    "q1": {
+      "question": "What is Smart Prompt?",
+      "answer": "Smart Prompt is a professional AI prompt management and optimization tool."
+    },
+    "q2": {
+      "question": "How to get started?",
+      "answer": "Click the 'Get Started' button to start collecting and managing prompts."
+    },
+    "q3": {
+      "question": "Is it free to use?",
+      "answer": "Yes, basic features are completely free."
+    },
+    "q4": {
+      "question": "How does prompt optimization work?",
+      "answer": "Our AI analyzes your prompts and provides optimization suggestions based on best practices."
+    }
+  },
+  "Footer": {
+    "rights": "All Rights Reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "Prompts": {
+    "title": "My Prompts",
+    "description": "Manage your prompt collection",
+    "new": "New Prompt",
+    "search": "Search prompts...",
+    "noResults": "No prompts found.",
+    "tags": "Tags",
+    "addTag": "Add Tag"
+  },
+  "Optimizer": {
+    "input": "Input Prompt",
+    "inputPlaceholder": "Enter your prompt here...",
+    "direction": "Optimization Direction",
+    "clarity": "Clarity",
+    "creativity": "Creativity",
+    "precision": "Precision",
+    "optimize": "Optimize",
+    "optimizing": "Optimizing...",
+    "output": "Optimized Prompt"
+  },
+  "Settings": {
+    "token": "API Token",
+    "tokenPlaceholder": "Enter your API token",
+    "generate": "Generate",
+    "notifications": "Enable Notifications",
+    "save": "Save Settings"
+  },
+  "Plugins": {
+    "title": "Browser Plugin",
+    "description": "Use our browser plugin to manage your prompts anywhere",
+    "downloadText": "Download Plugin",
+    "browsers": {
+      "chrome": "Download for Chrome",
+      "firefox": "Download for Firefox",
+      "edge": "Download for Edge"
+    },
+    "features": {
+      "quickAccess": {
+        "title": "Quick Access",
+        "description": "Access your saved prompts with one click"
+      },
+      "contextMenu": {
+        "title": "Context Menu",
+        "description": "Save prompts quickly via right-click menu on any page"
+      },
+      "sync": {
+        "title": "Auto Sync",
+        "description": "Automatically sync all prompts with your account"
+      }
+    },
+    "installation": {
+      "title": "Installation Guide",
+      "steps": {
+        "1": "Download from browser store",
+        "2": "Click install and confirm permissions",
+        "3": "Login to sync your data",
+        "4": "Start using!"
+      }
+    }
+  },
+  "logo": {
+    "alt": "Smart Prompt Logo"
+  }
+}

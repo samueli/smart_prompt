@@ -1,0 +1,198 @@
+{
+  "domestic": {
+    "chatglm_4": {
+      "name": "智谱 GLM-4",
+      "context_length": 128000,
+      "input_price": 0.01,
+      "output_price": 0.02,
+      "multimodal": true,
+      "provider": "zhipu"
+    },
+    "chatglm_3_turbo": {
+      "name": "智谱 GLM-3 Turbo",
+      "context_length": 32000,
+      "input_price": 0.005,
+      "output_price": 0.005,
+      "multimodal": false,
+      "provider": "zhipu"
+    },
+    "qwen_max": {
+      "name": "通义千问 Max",
+      "context_length": 32000,
+      "input_price": 0.012,
+      "output_price": 0.012,
+      "multimodal": true,
+      "provider": "aliyun"
+    },
+    "qwen_plus": {
+      "name": "通义千问 Plus",
+      "context_length": 32000,
+      "input_price": 0.008,
+      "output_price": 0.008,
+      "multimodal": true,
+      "provider": "aliyun"
+    },
+    "qwen_turbo": {
+      "name": "通义千问 Turbo",
+      "context_length": 16000,
+      "input_price": 0.004,
+      "output_price": 0.004,
+      "multimodal": true,
+      "provider": "aliyun"
+    },
+    "ernie_4": {
+      "name": "文心一言 4.0",
+      "context_length": 32000,
+      "input_price": 0.012,
+      "output_price": 0.012,
+      "multimodal": true,
+      "provider": "baidu"
+    },
+    "ernie_turbo": {
+      "name": "文心一言 Turbo",
+      "context_length": 16000,
+      "input_price": 0.008,
+      "output_price": 0.008,
+      "multimodal": true,
+      "provider": "baidu"
+    },
+    "ernie_lite": {
+      "name": "文心一言 Lite",
+      "context_length": 16000,
+      "input_price": 0.004,
+      "output_price": 0.004,
+      "multimodal": true,
+      "provider": "baidu"
+    },
+    "spark_3": {
+      "name": "讯飞星火 3.0",
+      "context_length": 32000,
+      "input_price": 0.01,
+      "output_price": 0.01,
+      "multimodal": true,
+      "provider": "xunfei"
+    },
+    "spark_2": {
+      "name": "讯飞星火 2.0",
+      "context_length": 16000,
+      "input_price": 0.005,
+      "output_price": 0.005,
+      "multimodal": false,
+      "provider": "xunfei"
+    },
+    "baichuan_turbo": {
+      "name": "百川 Turbo",
+      "context_length": 32000,
+      "input_price": 0.008,
+      "output_price": 0.008,
+      "multimodal": true,
+      "provider": "baichuan"
+    },
+    "minimax_pro": {
+      "name": "MiniMax Pro",
+      "context_length": 32000,
+      "input_price": 0.015,
+      "output_price": 0.015,
+      "multimodal": true,
+      "provider": "minimax"
+    },
+    "minimax_base": {
+      "name": "MiniMax Base",
+      "context_length": 16000,
+      "input_price": 0.008,
+      "output_price": 0.008,
+      "multimodal": false,
+      "provider": "minimax"
+    }
+  },
+  "overseas": {
+    "gpt_4_turbo": {
+      "name": "GPT-4 Turbo",
+      "context_length": 128000,
+      "input_price": 0.01,
+      "output_price": 0.03,
+      "multimodal": true,
+      "provider": "openai"
+    },
+    "gpt_4": {
+      "name": "GPT-4",
+      "context_length": 8192,
+      "input_price": 0.03,
+      "output_price": 0.06,
+      "multimodal": false,
+      "provider": "openai"
+    },
+    "gpt_3_5_turbo": {
+      "name": "GPT-3.5 Turbo",
+      "context_length": 16385,
+      "input_price": 0.0005,
+      "output_price": 0.0015,
+      "multimodal": false,
+      "provider": "openai"
+    },
+    "claude_3_opus": {
+      "name": "Claude 3 Opus",
+      "context_length": 200000,
+      "input_price": 0.015,
+      "output_price": 0.075,
+      "multimodal": true,
+      "provider": "anthropic"
+    },
+    "claude_3_sonnet": {
+      "name": "Claude 3 Sonnet",
+      "context_length": 200000,
+      "input_price": 0.003,
+      "output_price": 0.015,
+      "multimodal": true,
+      "provider": "anthropic"
+    },
+    "claude_2": {
+      "name": "Claude 2",
+      "context_length": 100000,
+      "input_price": 0.008,
+      "output_price": 0.024,
+      "multimodal": false,
+      "provider": "anthropic"
+    },
+    "gemini_pro": {
+      "name": "Gemini Pro",
+      "context_length": 32000,
+      "input_price": 0.0005,
+      "output_price": 0.0015,
+      "multimodal": true,
+      "provider": "google"
+    },
+    "mistral_large": {
+      "name": "Mistral Large",
+      "context_length": 32000,
+      "input_price": 0.008,
+      "output_price": 0.024,
+      "multimodal": false,
+      "provider": "mistral"
+    },
+    "mistral_medium": {
+      "name": "Mistral Medium",
+      "context_length": 32000,
+      "input_price": 0.003,
+      "output_price": 0.009,
+      "multimodal": false,
+      "provider": "mistral"
+    },
+    "mistral_small": {
+      "name": "Mistral Small",
+      "context_length": 32000,
+      "input_price": 0.0002,
+      "output_price": 0.0006,
+      "multimodal": false,
+      "provider": "mistral"
+    },
+    "mixtral_8x7b": {
+      "name": "Mixtral 8x7B",
+      "context_length": 32000,
+      "input_price": 0.0006,
+      "output_price": 0.0018,
+      "multimodal": false,
+      "provider": "mistral"
+    }
+  }
+}
