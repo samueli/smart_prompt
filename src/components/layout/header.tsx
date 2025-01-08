@@ -43,9 +43,6 @@ export function Header() {
               Pro
             </Badge>
           </Link>
-          <Link to={`/${locale}/plugins`} className="text-sm font-medium transition-colors hover:text-foreground/80">
-            {messages.Header.plugins}
-          </Link>
           <Link to={`/${locale}/settings`} className="text-sm font-medium transition-colors hover:text-foreground/80">
             {messages.Header.settings}
           </Link>

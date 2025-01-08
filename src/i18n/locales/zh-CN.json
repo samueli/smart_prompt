@@ -270,12 +270,14 @@
   "Footer": {
     "rights": "保留所有权利",
     "privacy": "隐私政策",
-    "terms": "使用条款"
+    "terms": "服务条款",
+    "feedback": "反馈"
   },
   "Plugins": {
     "title": "智能提示词插件",
-    "description": "使用我们的 Chrome 扩展程序，让你的提示词管理更加智能",
+    "description": "使用我们的 Chrome 扩展增强您的 AI 提示词体验",
     "downloadText": "下载插件",
+    "chromeStore": "Chrome 商店安装",
     "features": {
       "collect": {
         "title": "一键收藏",

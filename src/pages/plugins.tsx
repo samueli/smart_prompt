@@ -44,21 +44,44 @@ export default function PluginsPage() {
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           {t?.description || 'Enhance your AI prompt experience with our Chrome extension'}
         </p>
-        <Button size="lg" className="gap-2">
-          <Chrome className="h-5 w-5" />
-          <Download className="h-5 w-5" />
-          {t?.downloadText || 'Download Extension'}
-        </Button>
+        <div className="flex justify-center gap-4">
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => {
+              const link = document.createElement('a')
+              link.href = '/lib/smart_prompt_extension_v1.0.zip'
+              link.download = 'smart_prompt_extension_v1.0.zip'
+              document.body.appendChild(link)
+              link.click()
+              document.body.removeChild(link)
+            }}
+          >
+            <Download className="h-5 w-5" />
+            {t?.downloadText || 'Download Extension'}
+          </Button>
+          <Button 
+            size="lg" 
+            className="gap-2"
+            variant="outline"
+            onClick={() => {
+              window.open('https://chrome.google.com/webstore/detail/cfegclkdkjgpclfahanfgejfjfmpkmjl', '_blank')
+            }}
+          >
+            <Chrome className="h-5 w-5" />
+            {t?.chromeStore || 'Install from Chrome Store'}
+          </Button>
+        </div>
       </div>
 
       {/* 截图展示区域 */}
       <div className="mb-16 px-4">
         <div className="rounded-lg overflow-hidden border shadow-lg bg-background">
-          <div className="relative aspect-[2/1] w-full">
+          <div className="relative w-full">
             <img 
-              src="/images/plugin-screenshot.svg" 
+              src="/images/screenshot1.png" 
               alt="Plugin Screenshot"
-              className="w-full h-full object-cover"
+              className="w-full h-auto"
             />
             {/* 渐变遮罩 */}
             <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
@@ -103,10 +126,34 @@ export default function PluginsPage() {
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           {t?.cta?.description || 'Download our Chrome extension and start optimizing your prompts today'}
         </p>
-        <Button size="lg" className="gap-2">
-          <Chrome className="h-5 w-5" />
-          {t?.downloadText || 'Download Extension'}
-        </Button>
+        <div className="flex justify-center gap-4">
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => {
+              const link = document.createElement('a')
+              link.href = '/lib/smart_prompt_extension_v1.0.zip'
+              link.download = 'smart_prompt_extension_v1.0.zip'
+              document.body.appendChild(link)
+              link.click()
+              document.body.removeChild(link)
+            }}
+          >
+            <Download className="h-5 w-5" />
+            {t?.downloadText || 'Download Extension'}
+          </Button>
+          <Button 
+            size="lg" 
+            className="gap-2"
+            variant="outline"
+            onClick={() => {
+              window.open('https://chrome.google.com/webstore/detail/cfegclkdkjgpclfahanfgejfjfmpkmjl', '_blank')
+            }}
+          >
+            <Chrome className="h-5 w-5" />
+            {t?.chromeStore || 'Install from Chrome Store'}
+          </Button>
+        </div>
       </div>
     </div>
   )

@@ -30,6 +30,10 @@ export function Footer() {
           <Link to={`/${locale}/terms`} className="text-sm text-muted-foreground hover:underline">
             {t.terms}
           </Link>
+          <a href="mailto:feedback@playwithai.fun" className="feedback-link">
+            <span className="material-symbols-rounded">mail</span>
+            {t.feedback}
+          </a>
         </div>
       </div>
     </footer>

@@ -269,12 +269,14 @@
   "Footer": {
     "rights": "All rights reserved",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "feedback": "Feedback"
   },
   "Plugins": {
     "title": "Smart Prompt Extension",
     "description": "Enhance your AI prompt experience with our Chrome extension",
     "downloadText": "Download Extension",
+    "chromeStore": "Install from Chrome Store",
     "features": {
       "collect": {
         "title": "One-Click Collection",
