@@ -36,6 +36,8 @@ import { useLocale } from "@/contexts/LocaleContext"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 import { SharePosterDialog } from '@/components/share-poster-dialog'
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 interface PromptCardProps {
   id: string
@@ -51,6 +53,7 @@ interface PromptCardProps {
   onDelete?: (id: string) => void
   onEditTags?: (id: string) => void
   onOptimize?: (id: string) => void
+  className?: string
 }
 
 export function PromptCard({
@@ -67,6 +70,7 @@ export function PromptCard({
   onDelete,
   onEditTags,
   onOptimize,
+  className,
 }: PromptCardProps) {
   const { messages, locale } = useLocale()
   const navigate = useNavigate()
@@ -126,101 +130,120 @@ export function PromptCard({
   }
 
   return (
-    <>
-      <div className="relative rounded-lg border bg-card p-4 space-y-3">
-        <div className="flex justify-between items-start">
-          <div className="flex-1 mr-2 min-w-0"> 
-            <h2 className="text-lg font-bold truncate max-w-full">{title}</h2>
-            <Tabs defaultValue="source" className="w-full">
-              <TabsList className="mb-2">
-                <TabsTrigger value="source">{t.sourcePrompt}</TabsTrigger>
-                <TabsTrigger value="optimized">{t.optimizedPrompt}</TabsTrigger>
-              </TabsList>
-              <TabsContent value="source" className="mt-0">
-                <div className="relative group">
-                  <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{content}</p>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
-                    onClick={() => handleCopy(content)}
-                  >
-                    <Copy className="h-3 w-3" />
-                  </Button>
-                </div>
-              </TabsContent>
-              <TabsContent value="optimized" className="mt-0">
-                <div className="relative group">
-                  <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{optimizedContent}</p>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
-                    onClick={() => handleCopy(optimizedContent)}
-                  >
-                    <Copy className="h-3 w-3" />
-                  </Button>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-10 w-10 touch-manipulation"
-              >
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setShowShareDialog(true)}>
-                <Share2 className="mr-2 h-4 w-4" />
-                {t.share}
-              </DropdownMenuItem>
-              {onOptimize && (
-                <DropdownMenuItem onClick={handleGoToEvaluate}>
-                  <Wand2 className="mr-2 h-4 w-4" />
-                  {t.goToOptimize}
-                </DropdownMenuItem>
-              )}
-              {onTogglePublic && (
-                <DropdownMenuItem onClick={() => setShowPublishDialog(true)}>
-                  <Share2 className="mr-2 h-4 w-4" />
-                  <div className="flex items-center gap-2">
-                    {t.publish}
-                    <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
-                      Pro
-                    </Badge>
-                  </div>
-                </DropdownMenuItem>
-              )}
-              {onEditTags && (
-                <DropdownMenuItem onClick={() => onEditTags(id)}>
-                  <Tags className="mr-2 h-4 w-4" />
-                  {t.editTags}
-                </DropdownMenuItem>
-              )}
-              {onEdit && (
-                <DropdownMenuItem onClick={() => onEdit(id)}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  {t.edit}
-                </DropdownMenuItem>
-              )}
-              {onDelete && (
-                <DropdownMenuItem
-                  onClick={() => setShowDeleteDialog(true)}
-                  className="text-destructive"
+    <Card className={cn("relative", className)}>
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <CardTitle className="text-lg font-bold truncate pr-8">{title}</CardTitle>
+          <div className="absolute top-3 right-3 z-10">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="h-8 w-8 p-0 hover:bg-muted focus-visible:ring-1 focus-visible:ring-offset-1"
                 >
-                  <Trash className="mr-2 h-4 w-4" />
-                  {t.delete}
+                  <MoreVertical className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem 
+                  className="flex items-center px-3 py-3 cursor-pointer"
+                  onClick={() => setShowShareDialog(true)}
+                >
+                  <Share2 className="mr-3 h-5 w-5" />
+                  <span className="flex-1">{t.share}</span>
                 </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                {onOptimize && (
+                  <DropdownMenuItem 
+                    className="flex items-center px-3 py-3 cursor-pointer"
+                    onClick={handleGoToEvaluate}
+                  >
+                    <Wand2 className="mr-3 h-5 w-5" />
+                    <span className="flex-1">{t.goToOptimize}</span>
+                  </DropdownMenuItem>
+                )}
+                {onTogglePublic && (
+                  <DropdownMenuItem 
+                    className="flex items-center px-3 py-3 cursor-pointer"
+                    onClick={() => setShowPublishDialog(true)}
+                  >
+                    <Share2 className="mr-3 h-5 w-5" />
+                    <div className="flex items-center gap-2 flex-1">
+                      <span>{t.publish}</span>
+                      <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
+                        Pro
+                      </Badge>
+                    </div>
+                  </DropdownMenuItem>
+                )}
+                {onEditTags && (
+                  <DropdownMenuItem 
+                    className="flex items-center px-3 py-3 cursor-pointer"
+                    onClick={() => onEditTags(id)}
+                  >
+                    <Tags className="mr-3 h-5 w-5" />
+                    <span className="flex-1">{t.editTags}</span>
+                  </DropdownMenuItem>
+                )}
+                {onEdit && (
+                  <DropdownMenuItem 
+                    className="flex items-center px-3 py-3 cursor-pointer"
+                    onClick={() => onEdit(id)}
+                  >
+                    <Pencil className="mr-3 h-5 w-5" />
+                    <span className="flex-1">{t.edit}</span>
+                  </DropdownMenuItem>
+                )}
+                {onDelete && (
+                  <DropdownMenuItem 
+                    className="flex items-center px-3 py-3 cursor-pointer text-destructive"
+                    onClick={() => setShowDeleteDialog(true)}
+                  >
+                    <Trash className="mr-3 h-5 w-5" />
+                    <span className="flex-1">{t.delete}</span>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-
+      </CardHeader>
+      <div className="p-4 space-y-3">
+        <div className="flex-1 min-w-0"> 
+          <Tabs defaultValue="source" className="w-full">
+            <TabsList className="mb-2">
+              <TabsTrigger value="source">{t.sourcePrompt}</TabsTrigger>
+              <TabsTrigger value="optimized">{t.optimizedPrompt}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="source" className="mt-0">
+              <div className="relative group">
+                <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{content}</p>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
+                  onClick={() => handleCopy(content)}
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="optimized" className="mt-0">
+              <div className="relative group">
+                <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{optimizedContent}</p>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
+                  onClick={() => handleCopy(optimizedContent)}
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+        
         <div className="flex flex-wrap gap-2">
           {(tags || []).map((tag) => (
             <Badge key={tag} variant="secondary" className="text-xs">
@@ -228,7 +251,7 @@ export function PromptCard({
             </Badge>
           ))}
         </div>
-
+        
         <div className="flex justify-between items-center text-xs text-muted-foreground">
           <span>{formattedDate}</span>
           {isPublic ? (
@@ -238,14 +261,12 @@ export function PromptCard({
           )}
         </div>
       </div>
-
       <SharePosterDialog
         open={showShareDialog}
         onOpenChange={setShowShareDialog}
         title={title}
         content={content}
       />
-
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
@@ -257,7 +278,6 @@ export function PromptCard({
         onCancel={handleDeleteCancel}
         variant="destructive"
       />
-
       <AlertDialog open={showPublishDialog} onOpenChange={setShowPublishDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -284,6 +304,6 @@ export function PromptCard({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </Card>
   )
 }

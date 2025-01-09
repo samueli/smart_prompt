@@ -387,7 +387,7 @@ export function Prompts() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
               </div>
             ) : filteredMyPrompts.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {filteredMyPrompts.map(prompt => (
                   <PromptCard
                     key={prompt.id}
@@ -404,6 +404,7 @@ export function Prompts() {
                     onDelete={handleDelete}
                     onEditTags={handleEditTags}
                     onOptimize={handleGoToEvaluate}
+                    className="h-full"
                   />
                 ))}
               </div>
@@ -420,7 +421,7 @@ export function Prompts() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto" />
               </div>
             ) : filteredPublicPrompts.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {filteredPublicPrompts.map(prompt => (
                   <PromptCard
                     key={prompt.id}
@@ -437,6 +438,7 @@ export function Prompts() {
                     onDelete={undefined}
                     onEditTags={undefined}
                     onOptimize={undefined}
+                    className="h-full"
                   />
                 ))}
               </div>
