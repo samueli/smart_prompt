@@ -23,8 +23,10 @@ export function Header() {
               alt="Smart Prompt Logo" 
               className="h-8 w-8 transition-transform duration-300 hover:scale-110"
             />
-            <span className="font-bold text-lg">
-              Smart Prompt
+            <span className="font-bold text-lg relative group transition-colors duration-300">
+              <span className="relative transition-colors duration-300 group-hover:text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-500 to-primary bg-[length:200%_100%] group-hover:animate-gradient">
+                Smart Prompt
+              </span>
             </span>
           </Link>
         </div>
