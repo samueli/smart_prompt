@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import {
   AlertDialog,
@@ -29,6 +28,8 @@ import {
   Trash,
   Copy,
   Wand2,
+  RefreshCw,
+  GitFork,
 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { zhCN, enUS } from "date-fns/locale"
@@ -36,8 +37,9 @@ import { useLocale } from "@/contexts/LocaleContext"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 import { SharePosterDialog } from '@/components/share-poster-dialog'
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 
 interface PromptCardProps {
   id: string
@@ -45,7 +47,7 @@ interface PromptCardProps {
   content: string
   optimizedContent: string
   isPublic: boolean
-  tags: readonly string[]  // 这里只接受解析后的字符串数组
+  tags: readonly string[]
   updatedAt: string
   onShare: (id: string) => void
   onTogglePublic?: (id: string) => void
@@ -53,6 +55,7 @@ interface PromptCardProps {
   onDelete?: (id: string) => void
   onEditTags?: (id: string) => void
   onOptimize?: (id: string) => void
+  onFork?: (prompt: { title: string, source_prompt: string, optimized_prompt: string }) => void
   className?: string
 }
 
@@ -70,13 +73,14 @@ export function PromptCard({
   onDelete,
   onEditTags,
   onOptimize,
+  onFork,
   className,
 }: PromptCardProps) {
   const { messages, locale } = useLocale()
   const navigate = useNavigate()
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false)
   const [showShareDialog, setShowShareDialog] = React.useState(false)
-  const [showPublishDialog, setShowPublishDialog] = React.useState(false)
+  const [isFlipped, setIsFlipped] = React.useState(false)
   const t = messages?.Prompts
 
   if (!t) return null
@@ -114,8 +118,7 @@ export function PromptCard({
     setShowShareDialog(false)
   }
 
-  const handleGoToEvaluate = () => {
-    setShowPublishDialog(false)
+  const handleGoToOptimize = () => {
     const params = new URLSearchParams({
       promptId: id,
       title: title,
@@ -124,186 +127,316 @@ export function PromptCard({
     navigate(`/${locale}/optimizer?${params.toString()}`)
   }
 
-  const handleConfirmPublish = () => {
-    setShowPublishDialog(false)
-    onTogglePublic(id)
+  const handleFlip = () => {
+    if (optimizedContent) {
+      setIsFlipped(!isFlipped)
+    }
   }
 
   return (
-    <Card className={cn("relative", className)}>
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-bold truncate pr-8">{title}</CardTitle>
-          <div className="absolute top-3 right-3 z-10">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="h-8 w-8 p-0 hover:bg-muted focus-visible:ring-1 focus-visible:ring-offset-1"
-                >
-                  <MoreVertical className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem 
-                  className="flex items-center px-3 py-3 cursor-pointer"
-                  onClick={() => setShowShareDialog(true)}
-                >
-                  <Share2 className="mr-3 h-5 w-5" />
-                  <span className="flex-1">{t.share}</span>
-                </DropdownMenuItem>
-                {onOptimize && (
-                  <DropdownMenuItem 
-                    className="flex items-center px-3 py-3 cursor-pointer"
-                    onClick={handleGoToEvaluate}
-                  >
-                    <Wand2 className="mr-3 h-5 w-5" />
-                    <span className="flex-1">{t.goToOptimize}</span>
-                  </DropdownMenuItem>
-                )}
-                {onTogglePublic && (
-                  <DropdownMenuItem 
-                    className="flex items-center px-3 py-3 cursor-pointer"
-                    onClick={() => setShowPublishDialog(true)}
-                  >
-                    <Share2 className="mr-3 h-5 w-5" />
-                    <div className="flex items-center gap-2 flex-1">
-                      <span>{t.publish}</span>
-                      <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
-                        Pro
-                      </Badge>
-                    </div>
-                  </DropdownMenuItem>
-                )}
-                {onEditTags && (
-                  <DropdownMenuItem 
-                    className="flex items-center px-3 py-3 cursor-pointer"
-                    onClick={() => onEditTags(id)}
-                  >
-                    <Tags className="mr-3 h-5 w-5" />
-                    <span className="flex-1">{t.editTags}</span>
-                  </DropdownMenuItem>
-                )}
-                {onEdit && (
-                  <DropdownMenuItem 
-                    className="flex items-center px-3 py-3 cursor-pointer"
-                    onClick={() => onEdit(id)}
-                  >
-                    <Pencil className="mr-3 h-5 w-5" />
-                    <span className="flex-1">{t.edit}</span>
-                  </DropdownMenuItem>
-                )}
-                {onDelete && (
-                  <DropdownMenuItem 
-                    className="flex items-center px-3 py-3 cursor-pointer text-destructive"
-                    onClick={() => setShowDeleteDialog(true)}
-                  >
-                    <Trash className="mr-3 h-5 w-5" />
-                    <span className="flex-1">{t.delete}</span>
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </CardHeader>
-      <div className="p-4 space-y-3">
-        <div className="flex-1 min-w-0"> 
-          <Tabs defaultValue="source" className="w-full">
-            <TabsList className="mb-2">
-              <TabsTrigger value="source">{t.sourcePrompt}</TabsTrigger>
-              <TabsTrigger value="optimized">{t.optimizedPrompt}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="source" className="mt-0">
-              <div className="relative group">
-                <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{content}</p>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
-                  onClick={() => handleCopy(content)}
-                >
-                  <Copy className="h-3 w-3" />
-                </Button>
-              </div>
-            </TabsContent>
-            <TabsContent value="optimized" className="mt-0">
-              <div className="relative group">
-                <p className="text-sm line-clamp-3 whitespace-pre-wrap break-words max-w-[calc(100vw-3rem)]">{optimizedContent}</p>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 h-6 w-6"
-                  onClick={() => handleCopy(optimizedContent)}
-                >
-                  <Copy className="h-3 w-3" />
-                </Button>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-        
-        <div className="flex flex-wrap gap-2">
-          {(tags || []).map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-        
-        <div className="flex justify-between items-center text-xs text-muted-foreground">
-          <span>{formattedDate}</span>
-          {isPublic ? (
-            <Globe className="h-3 w-3" />
-          ) : (
-            <Lock className="h-3 w-3" />
+    <div className={cn("relative min-h-[400px] group/card", className)}>
+      <div className="perspective-1000">
+        <div
+          className={cn(
+            "transform-style-3d card-container",
+            isFlipped ? "rotate-y-180" : ""
           )}
+        >
+          {/* 正面 - 原始提示词 */}
+          <Card className={cn(
+            "backface-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
+            !isFlipped ? "z-[1]" : "z-0"
+          )}>
+            <CardHeader className="pb-2 relative flex-shrink-0">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <CardTitle className="text-base font-medium truncate">{title || t.untitled}</CardTitle>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
+                            onClick={handleFlip}
+                            disabled={!optimizedContent}
+                          >
+                            <RefreshCw className={cn("h-4 w-4", !optimizedContent && "text-muted-foreground")} />
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                        <p>{!optimizedContent ? t.noOptimized : (isFlipped ? t.viewOriginal : t.viewOptimized)}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 hover:bg-muted"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[140px]">
+                    <DropdownMenuItem 
+                      className="flex items-center px-2 py-1.5 cursor-pointer"
+                      onClick={() => onShare(id)}
+                    >
+                      <Share2 className="mr-2 h-4 w-4" />
+                      <span className="flex-1">{t.share}</span>
+                    </DropdownMenuItem>
+                    {onFork && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onFork({
+                          title: `${title} (Fork)`,
+                          source_prompt: content,
+                          optimized_prompt: optimizedContent
+                        })}
+                      >
+                        <GitFork className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.fork}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onOptimize && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={handleGoToOptimize}
+                      >
+                        <Wand2 className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.goToOptimize}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onTogglePublic && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onTogglePublic(id)}
+                      >
+                        <Share2 className="mr-2 h-4 w-4" />
+                        <div className="flex items-center gap-2 flex-1">
+                          <span>{t.publish}</span>
+                          <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
+                            Pro
+                          </Badge>
+                        </div>
+                      </DropdownMenuItem>
+                    )}
+                    {onEditTags && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onEditTags(id)}
+                      >
+                        <Tags className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.editTags}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onEdit && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onEdit(id)}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.edit}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onDelete && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer text-destructive"
+                        onClick={() => setShowDeleteDialog(true)}
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.delete}</span>
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 pb-0">
+              <div className="relative">
+                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md max-h-[240px] overflow-auto">
+                  {content}
+                </pre>
+              </div>
+            </CardContent>
+            <div className="mt-auto pt-2 pb-2 px-6 flex items-center justify-between border-t">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>{formattedDate}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 hover:bg-muted"
+                onClick={() => handleCopy(content)}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+          </Card>
+
+          {/* 反面 - 优化后提示词 */}
+          <Card className={cn(
+            "backface-hidden rotate-y-180 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
+            isFlipped ? "z-[1]" : "z-0"
+          )}>
+            <CardHeader className="pb-2 relative flex-shrink-0">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <CardTitle className="text-base font-medium truncate">{title || t.untitled}</CardTitle>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
+                            onClick={handleFlip}
+                            disabled={!optimizedContent}
+                          >
+                            <RefreshCw className={cn("h-4 w-4", !optimizedContent && "text-muted-foreground")} />
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                        <p>{!optimizedContent ? t.noOptimized : (isFlipped ? t.viewOriginal : t.viewOptimized)}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 hover:bg-muted"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[140px]">
+                    <DropdownMenuItem 
+                      className="flex items-center px-2 py-1.5 cursor-pointer"
+                      onClick={() => onShare(id)}
+                    >
+                      <Share2 className="mr-2 h-4 w-4" />
+                      <span className="flex-1">{t.share}</span>
+                    </DropdownMenuItem>
+                    {onFork && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onFork({
+                          title: `${title} (Fork)`,
+                          source_prompt: content,
+                          optimized_prompt: optimizedContent
+                        })}
+                      >
+                        <GitFork className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.fork}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onOptimize && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={handleGoToOptimize}
+                      >
+                        <Wand2 className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.goToOptimize}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onTogglePublic && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onTogglePublic(id)}
+                      >
+                        <Share2 className="mr-2 h-4 w-4" />
+                        <div className="flex items-center gap-2 flex-1">
+                          <span>{t.publish}</span>
+                          <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
+                            Pro
+                          </Badge>
+                        </div>
+                      </DropdownMenuItem>
+                    )}
+                    {onEditTags && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onEditTags(id)}
+                      >
+                        <Tags className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.editTags}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onEdit && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer"
+                        onClick={() => onEdit(id)}
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.edit}</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onDelete && (
+                      <DropdownMenuItem 
+                        className="flex items-center px-2 py-1.5 cursor-pointer text-destructive"
+                        onClick={() => setShowDeleteDialog(true)}
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        <span className="flex-1">{t.delete}</span>
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 pb-0">
+              <div className="relative">
+                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md max-h-[240px] overflow-auto">
+                  {optimizedContent}
+                </pre>
+              </div>
+            </CardContent>
+            <div className="mt-auto pt-2 pb-2 px-6 flex items-center justify-between border-t">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>{formattedDate}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 hover:bg-muted"
+                onClick={() => handleCopy(optimizedContent)}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
-      <SharePosterDialog
-        open={showShareDialog}
-        onOpenChange={setShowShareDialog}
-        title={title}
-        content={content}
-      />
+
       <ConfirmDialog
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
         title={t.confirmDelete}
         description={t.deleteMessage}
-        confirmText={t.delete}
-        cancelText={t.cancel}
         onConfirm={handleDelete}
         onCancel={handleDeleteCancel}
-        variant="destructive"
       />
-      <AlertDialog open={showPublishDialog} onOpenChange={setShowPublishDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t.publishTitle}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t.publishDescription}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowPublishDialog(false)}>
-              {t.cancel}
-            </AlertDialogCancel>
-            <Button
-              variant="outline"
-              onClick={() => handleGoToEvaluate()}
-            >
-              {t.goToOptimize}
-            </Button>
-            <AlertDialogAction
-              onClick={handleConfirmPublish}
-            >
-              {t.confirmPublish}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </Card>
+
+      <SharePosterDialog
+        open={showShareDialog}
+        onOpenChange={setShowShareDialog}
+        title={title}
+        content={content}
+        onShare={handleShare}
+        onCancel={handleShareCancel}
+      />
+    </div>
   )
 }

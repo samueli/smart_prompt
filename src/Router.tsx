@@ -4,6 +4,7 @@ import { Home } from '@/pages/Home'
 import { Prompts } from '@/pages/Prompts'
 import { Optimizer } from '@/pages/Optimizer'
 import { Evaluator } from '@/pages/Evaluator'
+import { Market } from '@/pages/Market'
 import PluginsPage from '@/pages/plugins'
 import Settings from '@/pages/Settings'
 import { useLocale } from '@/contexts/LocaleContext'
@@ -30,6 +31,7 @@ export function Router() {
         {/* 英文路由 */}
         <Route path="/en-US">
           <Route index element={<Home />} />
+          <Route path="market" element={<Market />} />
           <Route path="prompts" element={<Prompts />} />
           <Route path="prompts/new" element={<Prompts />} />
           <Route path="optimizer" element={<Optimizer />} />
@@ -41,6 +43,7 @@ export function Router() {
         {/* 中文路由 */}
         <Route path="/zh-CN">
           <Route index element={<Home />} />
+          <Route path="market" element={<Market />} />
           <Route path="prompts" element={<Prompts />} />
           <Route path="prompts/new" element={<Prompts />} />
           <Route path="optimizer" element={<Optimizer />} />

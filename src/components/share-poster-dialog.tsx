@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useLocale } from '@/contexts/LocaleContext'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Download, Copy, X } from 'lucide-react'
 
@@ -25,14 +25,13 @@ export function SharePosterDialog({
   title,
   content,
 }: SharePosterDialogProps) {
-  const { messages } = useLocale()
+  const { t } = useTranslation()
   const posterRef = useRef<HTMLDivElement>(null)
-  const t = messages?.Prompts
-
-  if (!t) return null
 
   const truncateContent = (text: string) => {
-    return text
+    const maxLength = 300
+    if (text.length <= maxLength) return text
+    return text.slice(0, maxLength) + '...'
   }
 
   const handleCopy = async () => {
@@ -46,7 +45,7 @@ export function SharePosterDialog({
       
       canvas.toBlob(async (blob) => {
         if (!blob) {
-          toast.error(t.copyFailed, { duration: 3000 })
+          toast.error(t('Prompts.copyFailed'), { duration: 3000 })
           return
         }
         
@@ -54,15 +53,15 @@ export function SharePosterDialog({
           await navigator.clipboard.write([
             new ClipboardItem({ 'image/png': blob })
           ])
-          toast.success(t.copySuccess, { duration: 3000 })
+          toast.success(t('Prompts.copySuccess'), { duration: 3000 })
         } catch (error) {
           console.error('Error copying image:', error)
-          toast.error(t.copyFailed, { duration: 3000 })
+          toast.error(t('Prompts.copyFailed'), { duration: 3000 })
         }
       }, 'image/png')
     } catch (error) {
       console.error('Error generating image:', error)
-      toast.error(t.copyFailed, { duration: 3000 })
+      toast.error(t('Prompts.copyFailed'), { duration: 3000 })
     }
   }
 
@@ -81,7 +80,7 @@ export function SharePosterDialog({
       link.click()
     } catch (error) {
       console.error('Error downloading image:', error)
-      toast.error(t.downloadFailed, { duration: 3000 })
+      toast.error(t('Prompts.downloadFailed'), { duration: 3000 })
     }
   }
 
@@ -89,7 +88,7 @@ export function SharePosterDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{t.share}</DialogTitle>
+          <DialogTitle>{t('Prompts.share')}</DialogTitle>
         </DialogHeader>
 
         <div className="mt-4 space-y-4">
@@ -97,17 +96,19 @@ export function SharePosterDialog({
           <div className="flex justify-center">
             <div 
               ref={posterRef}
-              className="aspect-[3/4] bg-gradient-to-br from-yellow-50 via-blue-50 to-purple-50 p-8 rounded-lg shadow-lg relative"
+              className="aspect-[3/4] bg-gradient-to-br from-yellow-50 via-blue-50 to-purple-50 p-8 rounded-lg shadow-lg relative dark:from-yellow-100 dark:via-blue-100 dark:to-purple-100"
               style={{ width: '450px', height: '600px' }}
             >
               {/* Title */}
-              <h1 className="text-2xl font-bold mb-6 text-center">{title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-6">{title}</h1>
 
               {/* Content */}
-              <div className="flex-1 mb-8 overflow-hidden" style={{ maxHeight: 'calc(100% - 200px)' }}>
-                <p className="text-base whitespace-pre-wrap break-words">
-                  {truncateContent(content)}
-                </p>
+              <div className="flex-1 mb-8 overflow-y-auto" style={{ maxHeight: 'calc(100% - 200px)' }}>
+                <div className="p-4 bg-white/50 rounded-lg backdrop-blur-sm">
+                  <p className="text-base text-gray-900 whitespace-pre-wrap break-words">
+                    {truncateContent(content)}
+                  </p>
+                </div>
               </div>
 
               {/* Footer */}
@@ -123,7 +124,7 @@ export function SharePosterDialog({
                           alt="Smart Prompt Logo" 
                           className="h-6 w-6"
                         />
-                        <span className="font-bold text-base">
+                        <span className="font-bold text-base text-gray-900">
                           Smart Prompt
                         </span>
                       </div>
@@ -137,15 +138,15 @@ export function SharePosterDialog({
                       </a>
                     </div>
                     <span className="text-xs text-gray-500">
-                      {t.scanForMore}
+                      {t('Prompts.scanForMore')}
                     </span>
                   </div>
 
                   {/* Right Side: QR Code */}
-                  <div className="w-20 h-20">
+                  <div className="w-20 h-20 bg-white rounded-lg p-2">
                     <QRCodeSVG
                       value="https://prompt.playwithai.fun"
-                      size={80}
+                      size={64}
                       level="L"
                       includeMargin={false}
                     />
@@ -162,20 +163,20 @@ export function SharePosterDialog({
               onClick={() => onOpenChange(false)}
             >
               <X className="h-4 w-4 mr-2" />
-              {t.cancel}
+              {t('Prompts.cancel')}
             </Button>
             <Button
               variant="outline"
               onClick={handleCopy}
             >
               <Copy className="h-4 w-4 mr-2" />
-              {t.copyPoster}
+              {t('Prompts.copyPoster')}
             </Button>
             <Button
               onClick={handleDownload}
             >
               <Download className="h-4 w-4 mr-2" />
-              {t.download}
+              {t('Prompts.download')}
             </Button>
           </div>
         </div>

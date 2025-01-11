@@ -23,15 +23,15 @@ export function QuickStart() {
           </p>
           <div className="flex gap-4">
             <Link to={`/${locale}/prompts/new`}>
-              <Button size="lg" className="gap-2">
-                <Sparkles className="mr-2 h-4 w-4" />
+              <Button size="lg" className="gap-2 text-base min-w-[120px]">
+                <Sparkles className="mr-1 h-4 w-4" />
                 {t.createPrompt}
               </Button>
             </Link>
-            <Link to={`/${locale}/docs/getting-started`}>
-              <Button variant="outline" size="lg" className="gap-2">
-                {t.learnMore}
-                <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to={`/${locale}/market`}>
+              <Button variant="outline" size="lg" className="gap-2 text-base min-w-[120px]">
+                {t.promptMarket}
+                <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
           </div>

@@ -20,6 +20,10 @@ export const siteConfig: SiteConfig = {
   defaultLocale: 'en',
   mainNav: [
     {
+      title: 'market',
+      href: '/market',
+    },
+    {
       title: 'prompts',
       href: '/prompts',
     },

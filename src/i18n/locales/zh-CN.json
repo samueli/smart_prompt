@@ -26,10 +26,12 @@
     "copySuccess": "复制成功",
     "copyFailed": "复制失败",
     "update": "更新",
-    "updateSuccess": "更新成功"
+    "updateSuccess": "更新成功",
+    "loginRequired": "请先登录"
   },
   "Header": {
-    "prompts": "提示词",
+    "market": "市场",
+    "prompts": "我的",
     "plugins": "插件",
     "optimizer": "优化器",
     "evaluator": "评测",
@@ -58,49 +60,58 @@
     "settingsDesc": "支持自定义 API 和模型配置，灵活设置访问令牌和使用限制，满足不同场景需求"
   },
   "Prompts": {
-    "pageTitle": "提示词管理",
+    "pageTitle": "我的提示词",
+    "search": "搜索提示词",
+    "noPrompts": "暂无提示词",
+    "fetchError": "获取提示词失败",
+    "createError": "创建提示词失败",
+    "createSuccess": "创建提示词成功",
+    "updateError": "更新提示词失败",
+    "updateSuccess": "更新提示词成功",
+    "deleteError": "删除提示词失败",
+    "deleteSuccess": "删除提示词成功",
+    "create": "创建",
+    "edit": "编辑",
+    "delete": "删除",
+    "share": "分享",
+    "cancel": "取消",
+    "confirm": "确认",
+    "download": "下载海报",
+    "copyPoster": "复制海报",
+    "copySuccess": "复制成功",
+    "copyFailed": "复制失败",
+    "downloadFailed": "下载失败",
+    "scanForMore": "扫码查看更多提示词",
+    "promptTitle": "提示词标题",
+    "promptContent": "提示词内容",
     "title": "标题",
     "titlePlaceholder": "请输入提示词标题",
-    "titleRequired": "请输入标题",
+    "titleRequired": "标题不能为空",
     "description": "管理和组织您的提示词",
     "new": "新建提示词",
-    "create": "新建提示词",
-    "search": "搜索提示词...",
+    "searchTags": "搜索标签",
+    "noTags": "未找到标签",
+    "clearTags": "清除所有标签",
     "filter": "筛选",
     "sort": "排序",
     "sortAsc": "升序排序",
     "sortDesc": "降序排序",
-    "noPrompts": "暂无提示词",
     "noSearchResults": "未找到匹配的提示词",
-    "share": "分享提示词",
-    "copyPoster": "复制海报",
-    "download": "下载海报",
-    "copySuccess": "海报已复制到剪贴板",
-    "copyFailed": "复制失败",
-    "downloadFailed": "下载失败",
-    "scanForMore": "扫码查看更多高质量提示词",
     "publish": "发布",
+    "unpublish": "取消发布",
+    "publishSuccess": "发布到提示词市场需要平台审核评测质量，该功能暂未开放，请稍等",
+    "unpublishSuccess": "取消发布成功",
     "publishTitle": "发布提示词",
-    "publishMessage": "提示词正在审核中，审核通过后将会公开展示",
-    "publishDescription": "为了保证提示词质量，提交发布后需要审核，该功能正在开发中",
-    "goToOptimize": "去优化",
+    "publishMessage": "发布后的提示词将在审核通过后对所有用户可见，确定要发布吗？",
+    "untitled": "未命名提示词",
+    "viewOptimized": "查看优化后的提示词",
+    "viewOriginal": "查看原始提示词",
+    "noOptimized": "请先优化提示词",
+    "goToOptimize": "优化",
     "confirmPublish": "确认发布",
     "editTags": "编辑标签",
-    "edit": "编辑",
-    "delete": "删除",
-    "confirmDelete": "确认删除",
-    "deleteMessage": "确定要删除这个提示词吗？此操作无法撤销。",
-    "cancel": "取消",
-    "tags": "标签",
     "addTag": "添加标签",
     "lastUpdated": "最后更新",
-    "fetchError": "获取提示词失败",
-    "updateSuccess": "更新成功",
-    "updateError": "更新失败",
-    "deleteSuccess": "删除成功",
-    "deleteError": "删除失败",
-    "createSuccess": "创建成功",
-    "createError": "创建失败",
     "sourcePrompt": "原始提示词",
     "sourcePromptPlaceholder": "请输入原始提示词...",
     "sourcePromptRequired": "请输入原始提示词",
@@ -112,9 +123,6 @@
     "confirmShare": "确认分享",
     "shareMessage": "确定要分享这个提示词吗？分享后其他用户可以查看和使用这个提示词。",
     "selectTags": "选择标签",
-    "searchTags": "搜索标签...",
-    "noTags": "没有找到标签",
-    "clearTags": "清除所有标签",
     "selectSortField": "选择排序字段",
     "sortByUpdateTime": "按更新时间",
     "sortByCreateTime": "按创建时间",
@@ -124,7 +132,14 @@
     "saveFailed": "保存失败",
     "noPublicPrompts": "暂无公开提示词",
     "myPrompts": "我的提示词",
-    "publicPrompts": "公开提示词"
+    "publicPrompts": "公开提示词",
+    "confirmDelete": "确认删除",
+    "deleteMessage": "确定要删除这个提示词吗？",
+    "copyPrompt": "复制提示词",
+    "filterByTags": "标签",
+    "fork": "复刻",
+    "confirmFork": "确认复刻",
+    "forkMessage": "确定要复刻这个提示词吗？复刻后将在我的提示词中创建一个副本。"
   },
   "Optimizer": {
     "title": "提示词优化",
@@ -160,7 +175,7 @@
     "confirmUpdateMessage": "确定要更新此提示词吗？原有内容将被覆盖。"
   },
   "Layout": {
-    "prompts": "提示词",
+    "prompts": "我的",
     "optimizer": "优化器",
     "evaluator": "评测",
     "settings": "设置"
@@ -222,9 +237,10 @@
     }
   },
   "QuickStart": {
-    "title": "快速开始",
-    "description": "只需几个简单的步骤，即可开始使用智能提示词",
-    "createPrompt": "创建提示词",
+    "title": "让 AI 更懂你的需求",
+    "description": "使用 Smart Prompt 管理和优化你的提示词，让 AI 输出更符合你的预期",
+    "createPrompt": "新建提示",
+    "promptMarket": "浏览市场",
     "learnMore": "了解更多"
   },
   "FAQ": {
@@ -274,31 +290,27 @@
     "feedback": "反馈"
   },
   "Plugins": {
-    "title": "智能提示词插件",
-    "description": "使用我们的 Chrome 扩展增强您的 AI 提示词体验",
+    "title": "Smart Prompt 浏览器插件",
+    "description": "使用我们的浏览器插件，让 AI 提示词管理更加便捷",
     "downloadText": "下载插件",
     "chromeStore": "Chrome 商店安装",
+    "coreFeatures": {
+      "title": "核心功能",
+      "description": "让你的提示词管理更智能、更高效"
+    },
     "features": {
       "collect": {
         "title": "一键收藏",
-        "description": "轻松收藏和管理您的提示词"
+        "description": "轻松收藏和管理你在各个网站上遇到的优质提示词"
       },
       "optimize": {
         "title": "智能优化",
-        "description": "自动优化提示词以获得更好的效果"
+        "description": "使用 AI 自动优化你的提示词，让对话更加精准"
       },
       "sync": {
         "title": "云端同步",
-        "description": "随时随地访问您的提示词"
+        "description": "所有提示词自动同步到云端，随时随地访问"
       }
-    },
-    "coreFeatures": {
-      "title": "核心功能",
-      "description": "让你的提示词管理更加智能和高效"
-    },
-    "cta": {
-      "title": "准备开始使用了吗？",
-      "description": "立即下载 Chrome 扩展程序，开始优化您的提示词"
     }
   },
   "Home": {
@@ -345,5 +357,32 @@
   "save": {
     "success": "保存成功",
     "failed": "保存失败"
+  },
+  "Market": {
+    "pageTitle": "提示词市场",
+    "searchPlaceholder": "搜索提示词...",
+    "allCategories": "全部",
+    "noResults": "暂无提示词",
+    "forkSuccess": "复刻成功",
+    "filterByTags": "标签",
+    "categoryExpand": "展开分类",
+    "categoryCollapse": "收起分类",
+    "categoryTitle": "分类"
+  },
+  "PromptCard": {
+    "share": "分享",
+    "publish": "发布",
+    "edit": "编辑",
+    "delete": "删除",
+    "editTags": "编辑标签",
+    "goToOptimize": "优化提示词",
+    "confirmDelete": "确认删除",
+    "deleteMessage": "确定要删除这个提示词吗？",
+    "publishTitle": "发布提示词",
+    "publishMessage": "提示词正在审核中，审核通过后将公开展示",
+    "untitled": "未命名提示词",
+    "viewOptimized": "查看优化后的提示词",
+    "viewOriginal": "查看原始提示词",
+    "noOptimized": "请先优化提示词"
   }
 }

@@ -31,6 +31,9 @@ export function Header() {
 
         {/* Navigation - Desktop */}
         <nav className="hidden md:flex items-center gap-6">
+          <Link to={`/${locale}/market`} className="text-sm font-medium transition-colors hover:text-foreground/80">
+            {messages.Header.market}
+          </Link>
           <Link to={`/${locale}/prompts`} className="text-sm font-medium transition-colors hover:text-foreground/80">
             {messages.Header.prompts}
           </Link>
@@ -65,11 +68,13 @@ export function Header() {
           <div className="flex items-center gap-2">
             <LocaleToggle />
             <ModeToggle />
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="hidden md:inline-flex">
               {messages.Header.login}
             </Button>
           </div>
-          <MobileNav />
+          <div className="md:hidden">
+            <MobileNav />
+          </div>
         </div>
       </div>
     </header>
