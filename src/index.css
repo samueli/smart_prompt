@@ -164,4 +164,14 @@
   .animate-gradient {
     animation: gradient 3s ease infinite;
   }
+
+  /* 隐藏滚动条但保持可滚动 */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }

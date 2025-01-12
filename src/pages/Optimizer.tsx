@@ -223,7 +223,7 @@ export function Optimizer() {
         throw new Error(result.error || t.Common.saveFailed)
       }
 
-      toast.success(promptId ? t.updateSuccess : t.Common.saved, {
+      toast.success(promptId ? t.Common.updateSuccess : t.Common.saved, {
         id: toastId,
         duration: 3000
       })
@@ -240,12 +240,6 @@ export function Optimizer() {
     } finally {
       setIsSaving(false)
     }
-  }
-
-  const handleUpdateClick = () => {
-    if (isSaving) return
-    handleSave()
-    setIsUpdateDialogOpen(false)
   }
 
   return (

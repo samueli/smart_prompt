@@ -46,6 +46,7 @@ interface PromptCardProps {
   title: string
   content: string
   optimizedContent: string
+  qualityScore?: number
   isPublic: boolean
   tags: readonly string[]
   updatedAt: string
@@ -64,6 +65,7 @@ export function PromptCard({
   title,
   content,
   optimizedContent,
+  qualityScore,
   isPublic,
   tags,
   updatedAt,
@@ -81,6 +83,7 @@ export function PromptCard({
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false)
   const [showShareDialog, setShowShareDialog] = React.useState(false)
   const [isFlipped, setIsFlipped] = React.useState(false)
+  const [isFullscreen, setIsFullscreen] = React.useState(false)
   const t = messages?.Prompts
 
   if (!t) return null
@@ -258,25 +261,83 @@ export function PromptCard({
                 </DropdownMenu>
               </div>
             </CardHeader>
-            <CardContent className="flex-1 pb-0">
-              <div className="relative">
-                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md max-h-[240px] overflow-auto">
+            <CardContent className="relative flex-1">
+              <div className={cn(
+                "relative h-full",
+                isFullscreen ? "h-[80vh] overflow-y-auto" : "max-h-[200px] overflow-hidden"
+              )}>
+                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
                   {content}
                 </pre>
+                <div className="absolute bottom-1 right-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                  >
+                    {isFullscreen ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                        <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                        <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                        <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M3 8V5a2 2 0 0 1 2-2h3" />
+                        <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                        <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
+                        <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                      </svg>
+                    )}
+                  </Button>
+                </div>
               </div>
             </CardContent>
-            <div className="mt-auto pt-2 pb-2 px-6 flex items-center justify-between border-t">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{formattedDate}</span>
+            <div className="mt-auto">
+              {tags.length > 0 && (
+                <div className="px-6 pb-2">
+                  <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>{formattedDate}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7 hover:bg-muted"
+                  onClick={() => handleCopy(content)}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 hover:bg-muted"
-                onClick={() => handleCopy(content)}
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
             </div>
           </Card>
 
@@ -288,7 +349,6 @@ export function PromptCard({
             <CardHeader className="pb-2 relative flex-shrink-0">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <CardTitle className="text-base font-medium truncate">{title || t.untitled}</CardTitle>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -300,15 +360,61 @@ export function PromptCard({
                             onClick={handleFlip}
                             disabled={!optimizedContent}
                           >
-                            <RefreshCw className={cn("h-4 w-4", !optimizedContent && "text-muted-foreground")} />
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              strokeWidth="2" 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              className="h-4 w-4"
+                            >
+                              <path d="m12 19-7-7 7-7"/>
+                              <path d="M19 12H5"/>
+                            </svg>
                           </Button>
                         </div>
                       </TooltipTrigger>
                       <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
-                        <p>{!optimizedContent ? t.noOptimized : (isFlipped ? t.viewOriginal : t.viewOptimized)}</p>
+                        <p>{t.viewOriginal}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
+                  {qualityScore !== undefined && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center h-6 gap-1 text-sm">
+                            <span className="text-muted-foreground">质量分</span>
+                            <div className="flex items-center gap-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <svg
+                                  key={star}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className={cn(
+                                    "w-4 h-4",
+                                    star <= (qualityScore / 2) ? "text-yellow-400" : "text-gray-300"
+                                  )}
+                                >
+                                  <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                </svg>
+                              ))}
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                          <div className="flex flex-col gap-1">
+                            <p className="font-medium">{t.qualityScore}</p>
+                            <p>{t.qualityDescription.replace('{score}', String(qualityScore)).replace('{stars}', String(Math.round(qualityScore / 2)))}</p>
+                            <p className="text-xs text-muted-foreground">{t.qualityTip}</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -396,29 +502,167 @@ export function PromptCard({
                 </DropdownMenu>
               </div>
             </CardHeader>
-            <CardContent className="flex-1 pb-0">
-              <div className="relative">
-                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md max-h-[240px] overflow-auto">
+            <CardContent className="relative flex-1">
+              <div className={cn(
+                "relative h-full",
+                isFullscreen ? "h-[80vh] overflow-y-auto" : "max-h-[200px] overflow-hidden"
+              )}>
+                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
                   {optimizedContent}
                 </pre>
+                <div className="absolute bottom-1 right-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                  >
+                    {isFullscreen ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                        <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                        <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                        <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M3 8V5a2 2 0 0 1 2-2h3" />
+                        <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                        <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
+                        <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                      </svg>
+                    )}
+                  </Button>
+                </div>
               </div>
             </CardContent>
-            <div className="mt-auto pt-2 pb-2 px-6 flex items-center justify-between border-t">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{formattedDate}</span>
+            <div className="mt-auto">
+              {tags.length > 0 && (
+                <div className="px-6 pb-2">
+                  <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>{formattedDate}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7 hover:bg-muted"
+                  onClick={() => handleCopy(optimizedContent)}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 hover:bg-muted"
-                onClick={() => handleCopy(optimizedContent)}
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
             </div>
           </Card>
         </div>
       </div>
+
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
+          <div className="fixed inset-4 z-50 bg-background border rounded-lg shadow-lg overflow-hidden">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-lg font-semibold">{title || t.untitled}</h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setIsFullscreen(false)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                  <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                  <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                  <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                </svg>
+              </Button>
+            </div>
+            <div className="p-4 overflow-y-auto h-[calc(100%-8rem)]">
+              <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
+                {isFlipped ? optimizedContent : content}
+              </pre>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-2 flex-wrap">
+                  {tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => {
+                          navigator.clipboard.writeText(isFlipped ? optimizedContent : content)
+                          toast.success(t.copySuccess)
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                        </svg>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <p>{t.copyToClipboard}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <ConfirmDialog
         open={showDeleteDialog}

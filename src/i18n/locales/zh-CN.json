@@ -139,40 +139,47 @@
     "filterByTags": "标签",
     "fork": "复刻",
     "confirmFork": "确认复刻",
-    "forkMessage": "确定要复刻这个提示词吗？复刻后将在我的提示词中创建一个副本。"
+    "forkMessage": "确定要复刻这个提示词吗？复刻后将在我的提示词中创建一个副本。",
+    "excellentQuality": "优秀质量",
+    "goodQuality": "良好质量",
+    "mediumQuality": "中等质量",
+    "lowQuality": "较低质量",
+    "qualityScore": "提示词质量评分",
+    "qualityDescription": "质量评分：{score}/10 分 ({stars}/5 星)",
+    "qualityTip": "质量评分反映了提示词的整体质量，包括清晰度、可执行性和预期效果等方面"
   },
   "Optimizer": {
-    "title": "提示词优化",
-    "placeholder": "请输入需要优化的提示词",
+    "title": "优化提示词",
+    "placeholder": "请输入需要优化的提示词...",
+    "scenario": "使用场景",
+    "framework": "优化框架",
     "optimize": "优化提示词",
-    "optimizing": "优化中...",
     "result": "优化结果",
     "resultPlaceholder": "优化后的提示词将显示在这里",
-    "scenario": "应用场景",
     "outputFormat": "输出格式",
-    "scenarios": {
-      "general": "通用对话",
-      "coding": "代码编程",
-      "writing": "文章写作",
-      "official": "公文写作",
-      "translation": "语言翻译",
-      "analysis": "数据分析",
-      "roleplay": "角色扮演",
-      "marketing": "营销文案",
-      "email": "邮件写作",
-      "academic": "学术写作",
-      "storytelling": "故事创作",
-      "interview": "面试对话",
-      "teaching": "教学辅导",
-      "presentation": "演讲稿写作"
-    },
     "outputFormats": {
       "plaintext": "纯文本",
       "markdown": "Markdown",
       "json": "JSON",
       "html": "HTML"
     },
-    "confirmUpdateMessage": "确定要更新此提示词吗？原有内容将被覆盖。"
+    "scenarios": {
+      "general": "通用场景",
+      "coding": "代码开发",
+      "writing": "文案创作",
+      "analysis": "数据分析",
+      "translation": "翻译润色"
+    },
+    "updateSuccess": "更新提示词成功",
+    "optimizing": "正在优化...",
+    "confirmUpdateMessage": "确定要更新此提示词吗？原有内容将被覆盖。",
+    "frameworkTips": {
+      "clarity": "提升提示词的清晰度和具体性",
+      "context": "增强上下文信息和背景说明",
+      "concise": "精简提示词，去除冗余内容",
+      "creative": "增加创造性和发散思维元素",
+      "constraint": "添加约束条件和输出规范"
+    }
   },
   "Layout": {
     "prompts": "我的",
@@ -361,10 +368,15 @@
   "Market": {
     "pageTitle": "提示词市场",
     "searchPlaceholder": "搜索提示词...",
-    "allCategories": "全部",
+    "categories": "分类",
+    "popularTags": "热门标签",
+    "allCategories": "全部分类",
     "noResults": "暂无提示词",
+    "noPrompts": "暂无提示词",
     "forkSuccess": "复刻成功",
     "filterByTags": "标签",
+    "expand": "展开导航",
+    "collapse": "收起导航",
     "categoryExpand": "展开分类",
     "categoryCollapse": "收起分类",
     "categoryTitle": "分类"

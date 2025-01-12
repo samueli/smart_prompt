@@ -37,6 +37,7 @@ interface Prompt {
   is_public: number
   source_prompt: string
   optimized_prompt: string
+  qualityScore: number
 }
 
 export function Prompts() {
@@ -83,7 +84,12 @@ export function Prompts() {
       if (!result.success) {
         throw new Error(result.error || t.fetchError)
       }
-      setMyPrompts(result.data)
+      // 为每个提示词添加随机质量分数
+      const promptsWithQualityScore = result.data.map((prompt: Prompt) => ({
+        ...prompt,
+        qualityScore: Math.floor(Math.random() * 11) // 生成0-10的随机整数
+      }))
+      setMyPrompts(promptsWithQualityScore)
     } catch (error) {
       toast.error(t.fetchError, {
         description: error instanceof Error ? error.message : t.fetchError,
@@ -393,6 +399,7 @@ export function Prompts() {
               isPublic={prompt.is_public === 1}
               tags={Array.isArray(prompt.tags) ? prompt.tags : JSON.parse(prompt.tags || '[]')}
               updatedAt={prompt.update_time}
+              qualityScore={prompt.qualityScore}
               onShare={handleShare}
               onTogglePublic={handleTogglePublic}
               onEdit={handleEdit}

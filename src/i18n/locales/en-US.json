@@ -133,41 +133,47 @@
     "delete": "Delete",
     "optimize": "Optimize",
     "confirmFork": "Confirm Fork",
-    "forkMessage": "Are you sure you want to fork this prompt? A copy will be created in your prompts."
+    "forkMessage": "Are you sure you want to fork this prompt? A copy will be created in your prompts.",
+    "excellentQuality": "Excellent Quality",
+    "goodQuality": "Good Quality",
+    "mediumQuality": "Medium Quality",
+    "lowQuality": "Low Quality",
+    "qualityScore": "Prompt Quality Score",
+    "qualityDescription": "Quality Score: {score}/10 ({stars}/5 stars)",
+    "qualityTip": "Quality score reflects the overall quality of the prompt, including clarity, executability, and expected effectiveness"
   },
   "Optimizer": {
-    "title": "Prompt Optimization",
-    "placeholder": "Enter the prompt to optimize",
+    "title": "Optimize Prompt",
+    "placeholder": "Enter the prompt you want to optimize...",
+    "scenario": "Usage Scenario",
+    "framework": "Optimization Framework",
     "optimize": "Optimize Prompt",
-    "optimizing": "Optimizing...",
     "result": "Optimization Result",
     "resultPlaceholder": "Optimized prompt will be shown here",
-    "scenario": "Application Scenario",
-    "framework": "Optimization Framework",
     "outputFormat": "Output Format",
-    "scenarios": {
-      "general": "General Conversation",
-      "coding": "Code Programming",
-      "writing": "Article Writing",
-      "official": "Official Document",
-      "translation": "Language Translation",
-      "analysis": "Data Analysis",
-      "roleplay": "Role Playing",
-      "marketing": "Marketing Copy",
-      "email": "Email Writing",
-      "academic": "Academic Writing",
-      "storytelling": "Story Creation",
-      "interview": "Interview Dialogue",
-      "teaching": "Teaching Assistant",
-      "presentation": "Speech Writing"
-    },
     "outputFormats": {
       "plaintext": "Plain Text",
       "markdown": "Markdown",
       "json": "JSON",
       "html": "HTML"
     },
-    "confirmUpdateMessage": "Are you sure you want to update this prompt? The original content will be overwritten."
+    "scenarios": {
+      "general": "General Purpose",
+      "coding": "Code Development",
+      "writing": "Content Creation",
+      "analysis": "Data Analysis",
+      "translation": "Translation & Polish"
+    },
+    "updateSuccess": "Prompt updated successfully",
+    "optimizing": "Optimizing...",
+    "confirmUpdateMessage": "Are you sure you want to update this prompt? The original content will be overwritten.",
+    "frameworkTips": {
+      "clarity": "Enhance prompt clarity and specificity",
+      "context": "Strengthen context and background information",
+      "concise": "Streamline prompt by removing redundancy",
+      "creative": "Add creative and divergent thinking elements",
+      "constraint": "Add constraints and output specifications"
+    }
   },
   "Nav": {
     "prompts": "My Prompts",
@@ -356,10 +362,15 @@
   "Market": {
     "pageTitle": "Prompt Market",
     "searchPlaceholder": "Search prompts...",
-    "allCategories": "All",
+    "categories": "Categories",
+    "popularTags": "Popular Tags",
+    "allCategories": "All Categories",
+    "noPrompts": "No prompts available",
     "noResults": "No prompts found",
     "forkSuccess": "Forked successfully",
     "filterByTags": "Tags",
+    "expand": "Expand Navigation",
+    "collapse": "Collapse Navigation",
     "categoryExpand": "Expand Categories",
     "categoryCollapse": "Collapse Categories",
     "categoryTitle": "Categories"
