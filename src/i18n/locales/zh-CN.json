@@ -164,11 +164,20 @@
       "html": "HTML"
     },
     "scenarios": {
-      "general": "通用场景",
-      "coding": "代码开发",
-      "writing": "文案创作",
+      "general": "通用对话",
+      "coding": "代码编程",
+      "writing": "文章写作",
+      "official": "公文写作",
+      "translation": "语言翻译",
       "analysis": "数据分析",
-      "translation": "翻译润色"
+      "roleplay": "角色扮演",
+      "marketing": "营销文案",
+      "email": "邮件写作",
+      "academic": "学术写作",
+      "storytelling": "故事创作",
+      "interview": "面试对话",
+      "teaching": "教学辅导",
+      "presentation": "演讲稿写作"
     },
     "updateSuccess": "更新提示词成功",
     "optimizing": "正在优化...",

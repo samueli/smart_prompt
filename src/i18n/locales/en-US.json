@@ -158,11 +158,20 @@
       "html": "HTML"
     },
     "scenarios": {
-      "general": "General Purpose",
-      "coding": "Code Development",
-      "writing": "Content Creation",
+      "general": "General Conversation",
+      "coding": "Code Programming",
+      "writing": "Article Writing",
+      "official": "Official Document",
+      "translation": "Language Translation",
       "analysis": "Data Analysis",
-      "translation": "Translation & Polish"
+      "roleplay": "Role Playing",
+      "marketing": "Marketing Copy",
+      "email": "Email Writing",
+      "academic": "Academic Writing",
+      "storytelling": "Story Creation",
+      "interview": "Interview Dialogue",
+      "teaching": "Teaching Assistant",
+      "presentation": "Speech Writing"
     },
     "updateSuccess": "Prompt updated successfully",
     "optimizing": "Optimizing...",
