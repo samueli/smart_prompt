@@ -471,7 +471,7 @@ export function Prompts() {
           <AlertDialogHeader>
             <AlertDialogTitle>{t.confirmPublish}</AlertDialogTitle>
             <AlertDialogDescription>
-              {selectedPrompt?.is_public === 1 ? t.unpublishMessage : t.publishMessage}
+              {t.publishMessage}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -482,7 +482,7 @@ export function Prompts() {
               {t.cancel}
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmPublish}>
-              {selectedPrompt?.is_public === 1 ? t.unpublish : t.publish}
+              {t.publish}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

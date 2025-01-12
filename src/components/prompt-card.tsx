@@ -30,6 +30,7 @@ import {
   Wand2,
   RefreshCw,
   GitFork,
+  Award,
 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { zhCN, enUS } from "date-fns/locale"
@@ -58,6 +59,8 @@ interface PromptCardProps {
   onOptimize?: (id: string) => void
   onFork?: (prompt: { title: string, source_prompt: string, optimized_prompt: string }) => void
   className?: string
+  hideFlip?: boolean
+  defaultContent?: 'optimized' | 'original'
 }
 
 export function PromptCard({
@@ -77,12 +80,14 @@ export function PromptCard({
   onOptimize,
   onFork,
   className,
+  hideFlip = false,
+  defaultContent = 'original',
 }: PromptCardProps) {
   const { messages, locale } = useLocale()
   const navigate = useNavigate()
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false)
   const [showShareDialog, setShowShareDialog] = React.useState(false)
-  const [isFlipped, setIsFlipped] = React.useState(false)
+  const [isFlipped, setIsFlipped] = React.useState(hideFlip ? defaultContent === 'optimized' : false)
   const [isFullscreen, setIsFullscreen] = React.useState(false)
   const t = messages?.Prompts
 
@@ -136,45 +141,18 @@ export function PromptCard({
     }
   }
 
+  const displayContent = hideFlip 
+    ? (defaultContent === 'optimized' ? (optimizedContent || content) : content)
+    : (isFlipped ? optimizedContent : content)
+
   return (
     <div className={cn("relative min-h-[400px] group/card", className)}>
-      <div className="perspective-1000">
-        <div
-          className={cn(
-            "transform-style-3d card-container",
-            isFlipped ? "rotate-y-180" : ""
-          )}
-        >
-          {/* 正面 - 原始提示词 */}
-          <Card className={cn(
-            "backface-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
-            !isFlipped ? "z-[1]" : "z-0"
-          )}>
-            <CardHeader className="pb-2 relative flex-shrink-0">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <CardTitle className="text-base font-medium truncate">{title || t.untitled}</CardTitle>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
-                            onClick={handleFlip}
-                            disabled={!optimizedContent}
-                          >
-                            <RefreshCw className={cn("h-4 w-4", !optimizedContent && "text-muted-foreground")} />
-                          </Button>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
-                        <p>{!optimizedContent ? t.noOptimized : (isFlipped ? t.viewOriginal : t.viewOptimized)}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+      {hideFlip ? (
+        <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
+          <CardHeader className="pb-2 relative flex-shrink-0">
+            <div className="flex items-center justify-between gap-2">
+              <CardTitle className="text-base font-medium truncate flex-1">{title || t.untitled}</CardTitle>
+              <div className="flex items-center gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 
@@ -257,322 +235,551 @@ export function PromptCard({
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-            </CardHeader>
-            <CardContent className="relative flex-1">
-              <div className={cn(
-                "relative h-full",
-                isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
-              )}>
-                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                  {content}
-                </pre>
-                <div className="absolute bottom-1 right-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
-                    onClick={() => setIsFullscreen(!isFullscreen)}
-                  >
-                    {isFullscreen ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-4 w-4"
-                      >
-                        <path d="M8 3v3a2 2 0 0 1-2 2H3" />
-                        <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
-                        <path d="M3 16h3a2 2 0 0 1 2 2v3" />
-                        <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-4 w-4"
-                      >
-                        <path d="M3 8V5a2 2 0 0 1 2-2h3" />
-                        <path d="M16 3h3a2 2 0 0 1 2 2v3" />
-                        <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
-                        <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
-                      </svg>
-                    )}
-                  </Button>
-                </div>
+            </div>
+            {tags?.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {tags.map((tag, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs px-1.5 py-0">
+                    {tag}
+                  </Badge>
+                ))}
               </div>
-            </CardContent>
-            <div className="mt-auto">
-              {tags.length > 0 && (
-                <div className="px-6 pb-2">
-                  <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
-                    {tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>{formattedDate}</span>
-                </div>
+            )}
+          </CardHeader>
+          <CardContent className="relative flex-1">
+            <div className={cn(
+              "relative h-full",
+              isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
+            )}>
+              <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
+                {displayContent}
+              </pre>
+              <div className="absolute bottom-1 right-1">
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-7 w-7 hover:bg-muted"
-                  onClick={() => handleCopy(content)}
+                  onClick={() => handleCopy(displayContent)}
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
             </div>
-          </Card>
-
-          {/* 反面 - 优化后提示词 */}
-          <Card className={cn(
-            "backface-hidden rotate-y-180 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
-            isFlipped ? "z-[1]" : "z-0"
-          )}>
-            <CardHeader className="pb-2 relative flex-shrink-0">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
-                            onClick={handleFlip}
-                            disabled={!optimizedContent}
+          </CardContent>
+          <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center gap-1">
+                      <Award className="w-4 h-4 text-muted-foreground" />
+                      <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <svg
+                            key={star}
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className={cn(
+                              "w-4 h-4",
+                              star <= ((score || 0) / 2) ? "text-yellow-400" : "text-gray-300"
+                            )}
                           >
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              viewBox="0 0 24 24" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              strokeWidth="2" 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              className="h-4 w-4"
-                            >
-                              <path d="m12 19-7-7 7-7"/>
-                              <path d="M19 12H5"/>
-                            </svg>
-                          </Button>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
-                        <p>{t.viewOriginal}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center h-6 gap-1 text-sm">
-                          <span className="text-muted-foreground">质量分</span>
-                          <div className="flex items-center gap-0.5">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <svg
-                                key={star}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className={cn(
-                                  "w-4 h-4",
-                                  star <= ((score || 0) / 2) ? "text-yellow-400" : "text-gray-300"
-                                )}
+                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                    <div className="flex flex-col gap-1">
+                      <p>{t.qualityDescription.replace('{score}', String(score || 0))}</p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{formattedDate}</span>
+            </div>
+          </div>
+        </Card>
+      ) : (
+        <div className="perspective-1000">
+          <div
+            className={cn(
+              "transform-style-3d card-container",
+              isFlipped ? "rotate-y-180" : ""
+            )}
+          >
+            {/* 正面 - 原始提示词 */}
+            <Card className={cn(
+              "backface-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
+              !isFlipped ? "z-[1]" : "z-0"
+            )}>
+              <CardHeader className="pb-2 relative flex-shrink-0">
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="text-base font-medium truncate flex-1">{title || t.untitled}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    {!hideFlip && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
+                                onClick={handleFlip}
+                                disabled={!optimizedContent}
                               >
-                                <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                              </svg>
-                            ))}
-                          </div>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
-                        <div className="flex flex-col gap-1">
-                          <p>{t.qualityDescription.replace('{score}', String(score || 0))}</p>
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 hover:bg-muted"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-[140px]">
-                    <DropdownMenuItem 
-                      className="flex items-center px-2 py-1.5 cursor-pointer"
-                      onClick={() => onShare(id)}
-                    >
-                      <Share2 className="mr-2 h-4 w-4" />
-                      <span className="flex-1">{t.share}</span>
-                    </DropdownMenuItem>
-                    {onFork && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={() => onFork({
-                          title: `${title} (Fork)`,
-                          source_prompt: content,
-                          optimized_prompt: optimizedContent
-                        })}
-                      >
-                        <GitFork className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.fork}</span>
-                      </DropdownMenuItem>
+                                <RefreshCw className={cn("h-4 w-4", !optimizedContent && "text-muted-foreground")} />
+                              </Button>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                            <p>{!optimizedContent ? t.noOptimized : (isFlipped ? t.viewOriginal : t.viewOptimized)}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     )}
-                    {onOptimize && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={handleGoToOptimize}
-                      >
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.goToOptimize}</span>
-                      </DropdownMenuItem>
-                    )}
-                    {onTogglePublic && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={() => onTogglePublic(id)}
-                      >
-                        <Share2 className="mr-2 h-4 w-4" />
-                        <div className="flex items-center gap-2 flex-1">
-                          <span>{t.publish}</span>
-                          <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
-                            Pro
-                          </Badge>
-                        </div>
-                      </DropdownMenuItem>
-                    )}
-                    {onEditTags && (
-                      <DropdownMenuItem onClick={() => onEditTags(id)}>
-                        <Tags className="mr-2 h-4 w-4" />
-                        {t.editTags}
-                      </DropdownMenuItem>
-                    )}
-                    {onEdit && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={() => onEdit(id)}
-                      >
-                        <Pencil className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.edit}</span>
-                      </DropdownMenuItem>
-                    )}
-                    {onDelete && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer text-destructive"
-                        onClick={() => setShowDeleteDialog(true)}
-                      >
-                        <Trash className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.delete}</span>
-                      </DropdownMenuItem>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent className="relative flex-1">
-              <div className={cn(
-                "relative h-full",
-                isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
-              )}>
-                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                  {optimizedContent}
-                </pre>
-                <div className="absolute bottom-1 right-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
-                    onClick={() => setIsFullscreen(!isFullscreen)}
-                  >
-                    {isFullscreen ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-4 w-4"
-                      >
-                        <path d="M8 3v3a2 2 0 0 1-2 2H3" />
-                        <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
-                        <path d="M3 16h3a2 2 0 0 1 2 2v3" />
-                        <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-4 w-4"
-                      >
-                        <path d="M3 8V5a2 2 0 0 1 2-2h3" />
-                        <path d="M16 3h3a2 2 0 0 1 2 2v3" />
-                        <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
-                        <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
-                      </svg>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-            <div className="mt-auto">
-              {tags.length > 0 && (
-                <div className="px-6 pb-2">
-                  <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
-                    {tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
-                        {tag}
-                      </Badge>
-                    ))}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 hover:bg-muted"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[140px]">
+                        <DropdownMenuItem 
+                          className="flex items-center px-2 py-1.5 cursor-pointer"
+                          onClick={() => onShare(id)}
+                        >
+                          <Share2 className="mr-2 h-4 w-4" />
+                          <span className="flex-1">{t.share}</span>
+                        </DropdownMenuItem>
+                        {onFork && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onFork({
+                              title: `${title} (Fork)`,
+                              source_prompt: content,
+                              optimized_prompt: optimizedContent
+                            })}
+                          >
+                            <GitFork className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.fork}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onOptimize && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={handleGoToOptimize}
+                          >
+                            <Wand2 className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.goToOptimize}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onTogglePublic && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onTogglePublic(id)}
+                          >
+                            <Share2 className="mr-2 h-4 w-4" />
+                            <div className="flex items-center gap-2 flex-1">
+                              <span>{t.publish}</span>
+                              <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
+                                Pro
+                              </Badge>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        {onEditTags && (
+                          <DropdownMenuItem onClick={() => onEditTags(id)}>
+                            <Tags className="mr-2 h-4 w-4" />
+                            {t.editTags}
+                          </DropdownMenuItem>
+                        )}
+                        {onEdit && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onEdit(id)}
+                          >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.edit}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onDelete && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer text-destructive"
+                            onClick={() => setShowDeleteDialog(true)}
+                          >
+                            <Trash className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.delete}</span>
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
-              )}
-              <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>{formattedDate}</span>
+              </CardHeader>
+              <CardContent className="relative flex-1">
+                <div className={cn(
+                  "relative h-full",
+                  isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
+                )}>
+                  <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
+                    {displayContent}
+                  </pre>
+                  <div className="absolute bottom-1 right-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
+                      onClick={() => setIsFullscreen(!isFullscreen)}
+                    >
+                      {isFullscreen ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                          <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                          <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                          <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          <path d="M3 8V5a2 2 0 0 1 2-2h3" />
+                          <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                          <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
+                          <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                        </svg>
+                      )}
+                    </Button>
+                  </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 hover:bg-muted"
-                  onClick={() => handleCopy(optimizedContent)}
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
+              </CardContent>
+              <div className="mt-auto">
+                {tags.length > 0 && (
+                  <div className="px-6 pb-2">
+                    <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
+                      {tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center gap-1">
+                            <Award className="w-4 h-4 text-muted-foreground" />
+                            <div className="flex items-center gap-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <svg
+                                  key={star}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className={cn(
+                                    "w-4 h-4",
+                                    star <= ((score || 0) / 2) ? "text-yellow-400" : "text-gray-300"
+                                  )}
+                                >
+                                  <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                </svg>
+                              ))}
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                          <div className="flex flex-col gap-1">
+                            <p>{t.qualityDescription.replace('{score}', String(score || 0))}</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">{formattedDate}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 hover:bg-muted"
+                      onClick={() => handleCopy(displayContent)}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+
+            {/* 反面 - 优化后提示词 */}
+            <Card className={cn(
+              "backface-hidden rotate-y-180 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full",
+              isFlipped ? "z-[1]" : "z-0"
+            )}>
+              <CardHeader className="pb-2 relative flex-shrink-0">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 flex-1">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 p-0 hover:bg-muted flex-shrink-0"
+                              onClick={handleFlip}
+                              disabled={!optimizedContent}
+                            >
+                              <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                className="h-4 w-4"
+                              >
+                                <path d="m12 19-7-7 7-7"/>
+                                <path d="M19 12H5"/>
+                              </svg>
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                          <p>{t.viewOriginal}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <CardTitle className="text-base font-medium truncate">{title || t.untitled}</CardTitle>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 hover:bg-muted"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[140px]">
+                        <DropdownMenuItem 
+                          className="flex items-center px-2 py-1.5 cursor-pointer"
+                          onClick={() => onShare(id)}
+                        >
+                          <Share2 className="mr-2 h-4 w-4" />
+                          <span className="flex-1">{t.share}</span>
+                        </DropdownMenuItem>
+                        {onFork && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onFork({
+                              title: `${title} (Fork)`,
+                              source_prompt: content,
+                              optimized_prompt: optimizedContent
+                            })}
+                          >
+                            <GitFork className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.fork}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onOptimize && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={handleGoToOptimize}
+                          >
+                            <Wand2 className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.goToOptimize}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onTogglePublic && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onTogglePublic(id)}
+                          >
+                            <Share2 className="mr-2 h-4 w-4" />
+                            <div className="flex items-center gap-2 flex-1">
+                              <span>{t.publish}</span>
+                              <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 text-[10px] px-1.5 py-0">
+                                Pro
+                              </Badge>
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        {onEditTags && (
+                          <DropdownMenuItem onClick={() => onEditTags(id)}>
+                            <Tags className="mr-2 h-4 w-4" />
+                            {t.editTags}
+                          </DropdownMenuItem>
+                        )}
+                        {onEdit && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer"
+                            onClick={() => onEdit(id)}
+                          >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.edit}</span>
+                          </DropdownMenuItem>
+                        )}
+                        {onDelete && (
+                          <DropdownMenuItem 
+                            className="flex items-center px-2 py-1.5 cursor-pointer text-destructive"
+                            onClick={() => setShowDeleteDialog(true)}
+                          >
+                            <Trash className="mr-2 h-4 w-4" />
+                            <span className="flex-1">{t.delete}</span>
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="relative flex-1">
+                <div className={cn(
+                  "relative h-full",
+                  isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
+                )}>
+                  <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
+                    {displayContent}
+                  </pre>
+                  <div className="absolute bottom-1 right-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
+                      onClick={() => setIsFullscreen(!isFullscreen)}
+                    >
+                      {isFullscreen ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                          <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                          <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                          <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          <path d="M3 8V5a2 2 0 0 1 2-2h3" />
+                          <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                          <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
+                          <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                        </svg>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+              <div className="mt-auto">
+                {tags.length > 0 && (
+                  <div className="px-6 pb-2">
+                    <div className="flex flex-wrap gap-1 max-h-[3.5rem] overflow-hidden">
+                      {tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs h-[1.5rem] flex items-center">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="pt-2 pb-2 px-6 flex items-center justify-between border-t">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center gap-1">
+                            <Award className="w-4 h-4 text-muted-foreground" />
+                            <div className="flex items-center gap-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <svg
+                                  key={star}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className={cn(
+                                    "w-4 h-4",
+                                    star <= ((score || 0) / 2) ? "text-yellow-400" : "text-gray-300"
+                                  )}
+                                >
+                                  <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                </svg>
+                              ))}
+                            </div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                          <div className="flex flex-col gap-1">
+                            <p>{t.qualityDescription.replace('{score}', String(score || 0))}</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">{formattedDate}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 hover:bg-muted"
+                      onClick={() => handleCopy(displayContent)}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
-      </div>
+      )}
 
       {isFullscreen && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
@@ -604,7 +811,7 @@ export function PromptCard({
             </div>
             <div className="p-4 overflow-y-auto h-[calc(100%-8rem)]">
               <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                {isFlipped ? optimizedContent : content}
+                {displayContent}
               </pre>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
@@ -624,7 +831,7 @@ export function PromptCard({
                         size="icon"
                         className="h-8 w-8"
                         onClick={() => {
-                          navigator.clipboard.writeText(isFlipped ? optimizedContent : content)
+                          navigator.clipboard.writeText(displayContent)
                           toast.success(t.copySuccess)
                         }}
                       >

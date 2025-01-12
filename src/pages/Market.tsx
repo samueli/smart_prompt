@@ -260,6 +260,8 @@ export function Market() {
                   creator={prompt.creator}
                   updatedAt={prompt.update_time}
                   isPublic={prompt.is_public === 1}
+                  hideFlip={true}
+                  defaultContent="optimized"
                   onShare={() => {
                     setSelectedPrompt(prompt)
                     setSharePosterOpen(true)
