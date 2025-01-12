@@ -251,17 +251,54 @@ export function PromptCard({
               "relative h-full",
               isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
             )}>
-              <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                {displayContent}
-              </pre>
-              <div className="absolute bottom-1 right-1">
+              <div className={cn(
+                "h-full overflow-y-auto",
+                "scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400"
+              )}>
+                <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md min-h-full">
+                  {displayContent}
+                </pre>
+              </div>
+              <div className="absolute bottom-1 right-1 z-10">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 hover:bg-muted"
-                  onClick={() => handleCopy(displayContent)}
+                  className="h-7 w-7 bg-muted hover:bg-muted-foreground/10"
+                  onClick={() => setIsFullscreen(!isFullscreen)}
                 >
-                  <Copy className="h-4 w-4" />
+                  {isFullscreen ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                    >
+                      <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                      <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                      <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                      <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                    >
+                      <path d="M3 8V5a2 2 0 0 1 2-2h3" />
+                      <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                      <path d="M21 16v3a2 2 0 0 1-2 2h-3" />
+                      <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                    </svg>
+                  )}
                 </Button>
               </div>
             </div>
@@ -301,6 +338,14 @@ export function PromptCard({
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">{formattedDate}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 hover:bg-muted"
+                onClick={() => handleCopy(displayContent)}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </Card>
@@ -430,12 +475,17 @@ export function PromptCard({
               <CardContent className="relative flex-1">
                 <div className={cn(
                   "relative h-full",
-                  isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
+                  isFullscreen ? "h-[80vh]" : "h-[200px]"
                 )}>
-                  <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                    {displayContent}
-                  </pre>
-                  <div className="absolute bottom-1 right-1">
+                  <div className={cn(
+                    "h-full overflow-y-auto",
+                    "scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400"
+                  )}>
+                    <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md min-h-full">
+                      {displayContent}
+                    </pre>
+                  </div>
+                  <div className="absolute bottom-1 right-1 z-10">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -569,7 +619,7 @@ export function PromptCard({
                                 className="h-4 w-4"
                               >
                                 <path d="m12 19-7-7 7-7"/>
-                                <path d="M19 12H5"/>
+                                <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
                               </svg>
                             </Button>
                           </div>
@@ -669,12 +719,17 @@ export function PromptCard({
               <CardContent className="relative flex-1">
                 <div className={cn(
                   "relative h-full",
-                  isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
+                  isFullscreen ? "h-[80vh]" : "h-[200px]"
                 )}>
-                  <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
-                    {displayContent}
-                  </pre>
-                  <div className="absolute bottom-1 right-1">
+                  <div className={cn(
+                    "h-full overflow-y-auto",
+                    "scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400"
+                  )}>
+                    <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md min-h-full">
+                      {displayContent}
+                    </pre>
+                  </div>
+                  <div className="absolute bottom-1 right-1 z-10">
                     <Button
                       variant="ghost"
                       size="icon"
