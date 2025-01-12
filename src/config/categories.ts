@@ -1,4 +1,4 @@
-import { Megaphone, Pencil, Globe, Cpu, Code, Palette, Brain, Lightbulb } from 'lucide-react'
+import { Megaphone, Pencil, Globe, Cpu, Code, Palette, Brain, Lightbulb, GraduationCap, Smile } from 'lucide-react'
 
 export interface Category {
   id: string
@@ -37,6 +37,18 @@ export const PROMPT_CATEGORIES: Category[] = [
       'en-US': 'Writing related prompts'
     },
     icon: Pencil
+  },
+  {
+    id: 'assistant',
+    name: {
+      'zh-CN': '智能助手',
+      'en-US': 'AI Assistant'
+    },
+    description: {
+      'zh-CN': '智能助手相关提示词',
+      'en-US': 'AI Assistant related prompts'
+    },
+    icon: Brain
   },
   {
     id: 'website',
@@ -87,16 +99,28 @@ export const PROMPT_CATEGORIES: Category[] = [
     icon: Palette
   },
   {
-    id: 'ai',
+    id: 'education',
     name: {
-      'zh-CN': '人工智能',
-      'en-US': 'AI'
+      'zh-CN': '教学辅导',
+      'en-US': 'Education'
     },
     description: {
-      'zh-CN': 'AI 相关提示词',
-      'en-US': 'AI related prompts'
+      'zh-CN': '教学辅导相关提示词',
+      'en-US': 'Education related prompts'
     },
-    icon: Brain
+    icon: GraduationCap
+  },
+  {
+    id: 'entertainment',
+    name: {
+      'zh-CN': '娱乐休闲',
+      'en-US': 'Entertainment'
+    },
+    description: {
+      'zh-CN': '娱乐休闲相关提示词',
+      'en-US': 'Entertainment related prompts'
+    },
+    icon: Smile
   },
   {
     id: 'other',

@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { SharePosterDialog } from '@/components/share-poster-dialog'
 import { useTokenCheck } from '@/hooks/useTokenCheck'
+import { useToken } from '@/hooks/useToken'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,12 +36,14 @@ interface Prompt {
   source_prompt: string
   optimized_prompt: string
   category: string
-  qualityScore?: number
+  score?: number
 }
 
 export function Market() {
   const { locale } = useLocale()
   const { t } = useTranslation()
+  const checkToken = useTokenCheck()
+  const { token, getLatestToken, refreshToken } = useToken()
   const [prompts, setPrompts] = useState<Prompt[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -56,15 +59,7 @@ export function Market() {
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  // 预设的分类列表
-  const categories = useMemo(() => PROMPT_CATEGORIES.map(category => ({
-    id: category.id,
-    name: category.name[locale as 'zh-CN' | 'en-US'],
-    description: category.description[locale as 'zh-CN' | 'en-US'],
-    icon: category.icon
-  })), [locale])
+  }, []);
 
   const fetchPrompts = async () => {
     try {
@@ -73,12 +68,7 @@ export function Market() {
       if (!result.success) {
         throw new Error(result.error || t('Market.fetchError'))
       }
-      // 为每个提示词添加随机质量分数
-      const promptsWithQualityScore = result.data.map((prompt: Prompt) => ({
-        ...prompt,
-        qualityScore: Math.floor(Math.random() * 11) // 生成0-10的随机整数
-      }))
-      setPrompts(promptsWithQualityScore)
+      setPrompts(result.data)
     } catch (error) {
       toast.error(t('Market.fetchError'), {
         description: error instanceof Error ? error.message : t('Market.fetchError'),
@@ -89,26 +79,10 @@ export function Market() {
     }
   }
 
+  // 初始化加载数据
   useEffect(() => {
     fetchPrompts()
-  }, [])
-
-  const handleShare = (id: string) => {
-    const prompt = prompts.find(p => p.id === id)
-    if (prompt) {
-      setSelectedPrompt(prompt)
-      setSharePosterOpen(true)
-    }
-  }
-
-  const handleFork = async (prompt: { title: string, source_prompt: string, optimized_prompt: string }) => {
-    setPromptToFork({
-      title: prompt.title,
-      source_prompt: prompt.source_prompt,
-      optimized_prompt: prompt.optimized_prompt
-    })
-    setForkDialogOpen(true)
-  }
+  }, []) // 只在组件挂载时执行一次
 
   const handleConfirmFork = async () => {
     if (!promptToFork) return
@@ -118,12 +92,17 @@ export function Market() {
         return
       }
 
+      const latestToken = getLatestToken()
+      console.log('Forking prompt with latest token:', latestToken)
       const response = await fetch(`${API_BASE_URL}/api/prompts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+          'Authorization': `Bearer ${latestToken}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         },
+        cache: 'no-store',
         body: JSON.stringify({
           title: promptToFork.title,
           source_prompt: promptToFork.source_prompt,
@@ -276,17 +255,21 @@ export function Market() {
                   title={prompt.title}
                   content={prompt.source_prompt}
                   optimizedContent={prompt.optimized_prompt}
+                  score={prompt.score}
                   tags={Array.isArray(prompt.tags) ? prompt.tags : JSON.parse(prompt.tags || '[]')}
                   creator={prompt.creator}
                   updatedAt={prompt.update_time}
                   isPublic={prompt.is_public === 1}
-                  qualityScore={prompt.qualityScore}
                   onShare={() => {
                     setSelectedPrompt(prompt)
                     setSharePosterOpen(true)
                   }}
                   onFork={async () => {
-                    setSelectedPrompt(prompt)
+                    setPromptToFork({
+                      title: `${prompt.title} (Fork)`,
+                      source_prompt: prompt.source_prompt,
+                      optimized_prompt: prompt.optimized_prompt
+                    })
                     setForkDialogOpen(true)
                   }}
                 />

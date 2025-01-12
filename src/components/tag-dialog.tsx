@@ -67,56 +67,50 @@ export function TagDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t.editTags}</DialogTitle>
-          <DialogDescription>
-            {t.editTagsDescription}
-          </DialogDescription>
+          <DialogTitle>{t.editTagsTitle}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="flex flex-wrap gap-2 mb-2">
-            {tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="px-2 py-1">
-                {tag}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-4 w-4 ml-1 hover:bg-transparent"
-                  onClick={() => handleRemoveTag(tag)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </Badge>
-            ))}
-          </div>
           <div className="flex gap-2">
             <Input
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              placeholder={t.addTagPlaceholder}
-              onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  handleAddTag()
+                }
+              }}
+              placeholder={t.tagPlaceholder}
+              className="flex-1"
             />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={handleAddTag}
-            >
-              <Plus className="h-4 w-4" />
+            <Button onClick={handleAddTag} disabled={!newTag}>
+              {t.addTag}
             </Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="flex items-center gap-1"
+              >
+                {tag}
+                <X
+                  className="h-3 w-3 cursor-pointer"
+                  onClick={() => handleRemoveTag(tag)}
+                />
+              </Badge>
+            ))}
           </div>
         </div>
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={loading}
-          >
-            {t.cancel}
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            {messages?.Common.cancel}
           </Button>
           <Button onClick={handleSubmit} disabled={loading}>
-            {loading ? t.saving : t.save}
+            {loading ? messages?.Common.saving : messages?.Common.confirm}
           </Button>
         </DialogFooter>
       </DialogContent>

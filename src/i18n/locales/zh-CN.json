@@ -110,7 +110,9 @@
     "goToOptimize": "优化",
     "confirmPublish": "确认发布",
     "editTags": "编辑标签",
+    "editTagsTitle": "编辑提示词标签",
     "addTag": "添加标签",
+    "tagPlaceholder": "输入标签名称",
     "lastUpdated": "最后更新",
     "sourcePrompt": "原始提示词",
     "sourcePromptPlaceholder": "请输入原始提示词...",
@@ -306,27 +308,31 @@
     "feedback": "反馈"
   },
   "Plugins": {
-    "title": "Smart Prompt 浏览器插件",
-    "description": "使用我们的浏览器插件，让 AI 提示词管理更加便捷",
-    "downloadText": "下载插件",
-    "chromeStore": "Chrome 商店安装",
+    "title": "Smart Prompt 插件",
+    "description": "通过我们的 Chrome 扩展增强您的 AI 提示词体验",
+    "downloadText": "下载扩展",
+    "chromeStore": "从 Chrome 商店安装",
     "coreFeatures": {
       "title": "核心功能",
-      "description": "让你的提示词管理更智能、更高效"
+      "description": "让您的提示词管理更智能、更高效"
     },
     "features": {
       "collect": {
         "title": "一键收藏",
-        "description": "轻松收藏和管理你在各个网站上遇到的优质提示词"
+        "description": "轻松收藏和管理您的提示词，随时随地访问"
       },
       "optimize": {
         "title": "智能优化",
-        "description": "使用 AI 自动优化你的提示词，让对话更加精准"
+        "description": "使用多种优化框架，提升提示词效果"
       },
       "sync": {
         "title": "云端同步",
-        "description": "所有提示词自动同步到云端，随时随地访问"
+        "description": "自动同步您的提示词，多设备无缝使用"
       }
+    },
+    "cta": {
+      "title": "准备开始使用了吗？",
+      "description": "下载我们的 Chrome 扩展，立即开始优化您的提示词"
     }
   },
   "Home": {

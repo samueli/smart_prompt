@@ -11,6 +11,7 @@ import { API_BASE_URL } from '@/config/env'
 import { Plus, Search } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTokenCheck } from '@/hooks/useTokenCheck'
+import { useToken } from '@/hooks/useToken'
 import { SharePosterDialog } from '@/components/share-poster-dialog'
 import {
   AlertDialog,
@@ -58,56 +59,58 @@ export function Prompts() {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null)
   const [sharePosterOpen, setSharePosterOpen] = useState(false)
   const [showPublishDialog, setShowPublishDialog] = useState(false)
+  const { token, getLatestToken } = useToken()
 
   const t = useMemo(() => messages?.Prompts, [messages])
   const commonT = useMemo(() => messages?.Common, [messages])
   const checkToken = useTokenCheck()
 
-  const fetchMyPrompts = async () => {
-    if (!t || !commonT) return
-
-    try {
-      if (!checkToken(commonT.tokenRequired)) {
-        // 获取当前语言路径
-        const langPath = location.pathname.startsWith('/zh-CN') ? '/zh-CN' : '/en-US'
-        // 跳转到设置页面
-        navigate(`${langPath}/settings`)
-        return
-      }
-
-      const response = await fetch(`${API_BASE_URL}/api/prompts`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-        }
-      })
-      const result = await response.json()
-      if (!result.success) {
-        throw new Error(result.error || t.fetchError)
-      }
-      // 为每个提示词添加随机质量分数
-      const promptsWithQualityScore = result.data.map((prompt: Prompt) => ({
-        ...prompt,
-        qualityScore: Math.floor(Math.random() * 11) // 生成0-10的随机整数
-      }))
-      setMyPrompts(promptsWithQualityScore)
-    } catch (error) {
-      toast.error(t.fetchError, {
-        description: error instanceof Error ? error.message : t.fetchError,
-        duration: 3000
-      })
-    }
-  }
-
+  // 合并所有初始化逻辑到一个 useEffect
   useEffect(() => {
-    if (t) {
-      const init = async () => {
+    const initData = async () => {
+      if (!t || !commonT) return;
+      
+      try {
+        if (!checkToken(commonT.tokenRequired)) {
+          const langPath = location.pathname.startsWith('/zh-CN') ? '/zh-CN' : '/en-US'
+          navigate(`${langPath}/settings`)
+          return
+        }
+
         setLoading(true)
-        await fetchMyPrompts()
+        const currentToken = localStorage.getItem('userToken')
+        if (!currentToken) return;
+
+        const response = await fetch(`${API_BASE_URL}/api/prompts`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${currentToken}`,
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          },
+          cache: 'no-store'
+        })
+        const result = await response.json()
+        if (!result.success) {
+          throw new Error(result.error || t.fetchError)
+        }
+        const promptsWithQualityScore = result.data.map((prompt: Prompt) => ({
+          ...prompt,
+          qualityScore: Math.floor(Math.random() * 11)
+        }))
+        setMyPrompts(promptsWithQualityScore)
+      } catch (error) {
+        toast.error(t.fetchError, {
+          description: error instanceof Error ? error.message : t.fetchError,
+          duration: 3000
+        })
+      } finally {
         setLoading(false)
       }
-      init()
     }
-  }, [t])
+
+    initData()
+  }, [t, commonT, token]) // 只在翻译和 token 变化时重新加载
 
   const handleShare = (id: string) => {
     const prompt = myPrompts.find(p => p.id === id)
@@ -176,15 +179,16 @@ export function Prompts() {
     if (!t) return
 
     try {
-      if (!checkToken(commonT.tokenRequired)) {
-        return
-      }
-
+      const latestToken = getLatestToken()
+      console.log('Deleting prompt with latest token:', latestToken)
       const response = await fetch(`${API_BASE_URL}/api/prompts/${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-        }
+          'Authorization': `Bearer ${latestToken}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        },
+        cache: 'no-store'
       })
 
       const result = await response.json()
@@ -218,16 +222,17 @@ export function Prompts() {
     if (!selectedPrompt) return
 
     try {
-      if (!checkToken(commonT.tokenRequired)) {
-        return
-      }
-
+      const latestToken = getLatestToken()
+      console.log('Updating tags with latest token:', latestToken)
       const response = await fetch(`${API_BASE_URL}/api/prompts/${selectedPrompt.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+          'Authorization': `Bearer ${latestToken}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         },
+        cache: 'no-store',
         body: JSON.stringify({
           ...selectedPrompt,
           tags: JSON.stringify(tags)
@@ -239,7 +244,7 @@ export function Prompts() {
       }
 
       toast.success(t.updateSuccess, { duration: 3000 })
-      fetchMyPrompts()
+      // fetchMyPrompts()
     } catch (error) {
       console.error('Error updating tags:', error)
       toast.error(t.updateFailed, { duration: 3000 })
@@ -311,16 +316,17 @@ export function Prompts() {
     if (!selectedPrompt) return
 
     try {
-      if (!checkToken(commonT.tokenRequired)) {
-        return
-      }
-
+      const latestToken = getLatestToken()
+      console.log('Updating prompt with latest token:', latestToken)
       const response = await fetch(`${API_BASE_URL}/api/prompts/${selectedPrompt.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+          'Authorization': `Bearer ${latestToken}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         },
+        cache: 'no-store',
         body: JSON.stringify({
           ...data,
           tags: JSON.stringify(data.tags)
@@ -332,10 +338,53 @@ export function Prompts() {
       }
 
       toast.success(t.updateSuccess, { duration: 3000 })
-      fetchMyPrompts()
+      // fetchMyPrompts()
     } catch (error) {
       console.error('Error updating prompt:', error)
       toast.error(t.updateFailed, { duration: 3000 })
+    }
+  }
+
+  const handleCreate = async (data: {
+    title: string
+    source_prompt: string
+    optimized_prompt: string
+    is_public: number
+    tags: string[]
+  }) => {
+    if (!t) return
+
+    try {
+      const latestToken = getLatestToken()
+      console.log('Creating prompt with latest token:', latestToken)
+      const response = await fetch(`${API_BASE_URL}/api/prompts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${latestToken}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        },
+        cache: 'no-store',
+        body: JSON.stringify({
+          ...data,
+          tags: JSON.stringify(data.tags)
+        })
+      })
+
+      const result = await response.json()
+      if (!result.success) {
+        throw new Error(result.error || t.createError)
+      }
+
+      await fetchMyPrompts()
+      setCreateDialogOpen(false)
+      toast.success(t.createSuccess, { duration: 3000 })
+    } catch (error) {
+      toast.error(t.createError, {
+        description: error instanceof Error ? error.message : t.createError,
+        duration: 3000
+      })
     }
   }
 
@@ -447,41 +496,7 @@ export function Prompts() {
         open={createDialogOpen}
         onOpenChange={setCreateDialogOpen}
         title={t.create}
-        onSubmit={async (data) => {
-          if (!t || !commonT) return
-
-          try {
-            if (!checkToken(commonT.tokenRequired)) {
-              return
-            }
-
-            const response = await fetch(`${API_BASE_URL}/api/prompts`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-              },
-              body: JSON.stringify({
-                ...data,
-                tags: JSON.stringify(data.tags)
-              })
-            })
-
-            const result = await response.json()
-            if (!result.success) {
-              throw new Error(result.error || t.createError)
-            }
-
-            await fetchMyPrompts()
-            setCreateDialogOpen(false)
-            toast.success(t.createSuccess, { duration: 3000 })
-          } catch (error) {
-            toast.error(t.createError, {
-              description: error instanceof Error ? error.message : t.createError,
-              duration: 3000
-            })
-          }
-        }}
+        onSubmit={handleCreate}
       />
 
       <PromptDialog

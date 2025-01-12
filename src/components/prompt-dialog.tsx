@@ -217,10 +217,10 @@ export function PromptDialog({
             onClick={() => onOpenChange(false)}
             disabled={loading}
           >
-            {t?.cancel}
+            {messages?.Common.cancel}
           </Button>
           <Button onClick={handleSubmit} disabled={loading}>
-            {loading ? t?.submitting : t?.submit}
+            {loading ? messages?.Common.saving : messages?.Common.confirm}
           </Button>
         </div>
       </DialogContent>

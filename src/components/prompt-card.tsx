@@ -46,7 +46,7 @@ interface PromptCardProps {
   title: string
   content: string
   optimizedContent: string
-  qualityScore?: number
+  score?: number
   isPublic: boolean
   tags: readonly string[]
   updatedAt: string
@@ -65,7 +65,7 @@ export function PromptCard({
   title,
   content,
   optimizedContent,
-  qualityScore,
+  score,
   isPublic,
   tags,
   updatedAt,
@@ -231,12 +231,9 @@ export function PromptCard({
                       </DropdownMenuItem>
                     )}
                     {onEditTags && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={() => onEditTags(id)}
-                      >
+                      <DropdownMenuItem onClick={() => onEditTags(id)}>
                         <Tags className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.editTags}</span>
+                        {t.editTags}
                       </DropdownMenuItem>
                     )}
                     {onEdit && (
@@ -381,40 +378,38 @@ export function PromptCard({
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  {qualityScore !== undefined && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex items-center h-6 gap-1 text-sm">
-                            <span className="text-muted-foreground">质量分</span>
-                            <div className="flex items-center gap-0.5">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <svg
-                                  key={star}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className={cn(
-                                    "w-4 h-4",
-                                    star <= (qualityScore / 2) ? "text-yellow-400" : "text-gray-300"
-                                  )}
-                                >
-                                  <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
-                                </svg>
-                              ))}
-                            </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="flex items-center h-6 gap-1 text-sm">
+                          <span className="text-muted-foreground">质量分</span>
+                          <div className="flex items-center gap-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <svg
+                                key={star}
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className={cn(
+                                  "w-4 h-4",
+                                  star <= ((score || 0) / 2) ? "text-yellow-400" : "text-gray-300"
+                                )}
+                              >
+                                <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                              </svg>
+                            ))}
                           </div>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
-                          <div className="flex flex-col gap-1">
-                            <p className="font-medium">{t.qualityScore}</p>
-                            <p>{t.qualityDescription.replace('{score}', String(qualityScore)).replace('{stars}', String(Math.round(qualityScore / 2)))}</p>
-                            <p className="text-xs text-muted-foreground">{t.qualityTip}</p>
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
+                        <div className="flex flex-col gap-1">
+                          <p className="font-medium">{t.qualityScore}</p>
+                          <p>{t.qualityDescription.replace('{score}', String(score || 0)).replace('{stars}', String(Math.floor((score || 0) / 2)))}</p>
+                          <p className="text-xs text-muted-foreground">{t.qualityTip}</p>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -472,12 +467,9 @@ export function PromptCard({
                       </DropdownMenuItem>
                     )}
                     {onEditTags && (
-                      <DropdownMenuItem 
-                        className="flex items-center px-2 py-1.5 cursor-pointer"
-                        onClick={() => onEditTags(id)}
-                      >
+                      <DropdownMenuItem onClick={() => onEditTags(id)}>
                         <Tags className="mr-2 h-4 w-4" />
-                        <span className="flex-1">{t.editTags}</span>
+                        {t.editTags}
                       </DropdownMenuItem>
                     )}
                     {onEdit && (
