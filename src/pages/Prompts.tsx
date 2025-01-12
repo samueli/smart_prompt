@@ -38,7 +38,8 @@ interface Prompt {
   is_public: number
   source_prompt: string
   optimized_prompt: string
-  qualityScore: number
+  score: number,
+  category: string
 }
 
 export function Prompts() {
@@ -53,7 +54,6 @@ export function Prompts() {
   const [order, setOrder] = useState<'asc' | 'desc'>('desc')
   const [currentPage, setCurrentPage] = useState(1)
   const [tagDialogOpen, setTagDialogOpen] = useState(false)
-  const [editingTagsPromptId, setEditingTagsPromptId] = useState<string | null>(null)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null)
@@ -94,11 +94,7 @@ export function Prompts() {
         if (!result.success) {
           throw new Error(result.error || t.fetchError)
         }
-        const promptsWithQualityScore = result.data.map((prompt: Prompt) => ({
-          ...prompt,
-          qualityScore: Math.floor(Math.random() * 11)
-        }))
-        setMyPrompts(promptsWithQualityScore)
+        setMyPrompts(result.data);
       } catch (error) {
         toast.error(t.fetchError, {
           description: error instanceof Error ? error.message : t.fetchError,
@@ -448,7 +444,7 @@ export function Prompts() {
               isPublic={prompt.is_public === 1}
               tags={Array.isArray(prompt.tags) ? prompt.tags : JSON.parse(prompt.tags || '[]')}
               updatedAt={prompt.update_time}
-              qualityScore={prompt.qualityScore}
+              score={prompt.score}
               onShare={handleShare}
               onTogglePublic={handleTogglePublic}
               onEdit={handleEdit}

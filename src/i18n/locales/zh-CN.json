@@ -147,7 +147,7 @@
     "mediumQuality": "中等质量",
     "lowQuality": "较低质量",
     "qualityScore": "提示词质量评分",
-    "qualityDescription": "质量评分：{score}/10 分 ({stars}/5 星)",
+    "qualityDescription": "质量评分：{score}/10 分",
     "qualityTip": "质量评分反映了提示词的整体质量，包括清晰度、可执行性和预期效果等方面"
   },
   "Optimizer": {

@@ -141,7 +141,7 @@
     "mediumQuality": "Medium Quality",
     "lowQuality": "Low Quality",
     "qualityScore": "Prompt Quality Score",
-    "qualityDescription": "Quality Score: {score}/10 ({stars}/5 stars)",
+    "qualityDescription": "Quality Score: {score}/10",
     "qualityTip": "Quality score reflects the overall quality of the prompt, including clarity, executability, and expected effectiveness"
   },
   "Optimizer": {

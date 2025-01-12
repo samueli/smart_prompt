@@ -261,7 +261,7 @@ export function PromptCard({
             <CardContent className="relative flex-1">
               <div className={cn(
                 "relative h-full",
-                isFullscreen ? "h-[80vh] overflow-y-auto" : "max-h-[200px] overflow-hidden"
+                isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
               )}>
                 <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
                   {content}
@@ -403,9 +403,7 @@ export function PromptCard({
                       </TooltipTrigger>
                       <TooltipContent side="top" align="center" sideOffset={5} className="z-[100]">
                         <div className="flex flex-col gap-1">
-                          <p className="font-medium">{t.qualityScore}</p>
-                          <p>{t.qualityDescription.replace('{score}', String(score || 0)).replace('{stars}', String(Math.floor((score || 0) / 2)))}</p>
-                          <p className="text-xs text-muted-foreground">{t.qualityTip}</p>
+                          <p>{t.qualityDescription.replace('{score}', String(score || 0))}</p>
                         </div>
                       </TooltipContent>
                     </Tooltip>
@@ -497,7 +495,7 @@ export function PromptCard({
             <CardContent className="relative flex-1">
               <div className={cn(
                 "relative h-full",
-                isFullscreen ? "h-[80vh] overflow-y-auto" : "max-h-[200px] overflow-hidden"
+                isFullscreen ? "h-[80vh] overflow-y-auto" : "h-[200px] overflow-y-auto"
               )}>
                 <pre className="text-sm whitespace-pre-wrap break-words font-mono bg-muted p-3 rounded-md h-full">
                   {optimizedContent}
