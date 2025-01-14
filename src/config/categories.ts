@@ -1,4 +1,4 @@
-import { Megaphone, Pencil, Globe, Cpu, Code, Palette, Brain, Lightbulb, GraduationCap, Smile } from 'lucide-react'
+import { Megaphone, Pencil, Code, Palette, Brain, Lightbulb, GraduationCap, Smile, Rocket, Coffee, Theater } from 'lucide-react'
 
 export interface Category {
   id: string
@@ -51,28 +51,40 @@ export const PROMPT_CATEGORIES: Category[] = [
     icon: Brain
   },
   {
-    id: 'website',
+    id: 'productivity',
     name: {
-      'zh-CN': '网站开发',
-      'en-US': 'Website'
+      'zh-CN': '效率工具',
+      'en-US': 'Productivity'
     },
     description: {
-      'zh-CN': '网站开发相关提示词',
-      'en-US': 'Website development prompts'
+      'zh-CN': '效率工具相关提示词',
+      'en-US': 'Productivity related prompts'
     },
-    icon: Globe
+    icon: Rocket
   },
   {
-    id: 'tech',
+    id: 'lifestyle',
     name: {
-      'zh-CN': '科技媒体',
-      'en-US': 'Technology'
+      'zh-CN': '生活方式',
+      'en-US': 'Lifestyle'
     },
     description: {
-      'zh-CN': '科技媒体相关提示词',
-      'en-US': 'Technology related prompts'
+      'zh-CN': '生活方式相关提示词',
+      'en-US': 'Lifestyle related prompts'
     },
-    icon: Cpu
+    icon: Coffee
+  },
+  {
+    id: 'role-playing',
+    name: {
+      'zh-CN': '角色扮演',
+      'en-US': 'Role Playing'
+    },
+    description: {
+      'zh-CN': '角色扮演相关提示词',
+      'en-US': 'Role Playing related prompts'
+    },
+    icon: Theater
   },
   {
     id: 'development',
